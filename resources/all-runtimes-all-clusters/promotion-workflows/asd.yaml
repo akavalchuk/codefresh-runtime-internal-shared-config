@@ -1,8 +1,0 @@
-kind: WorkflowTemplate
-metadata:
-  name: asd
-  annotations:
-    description: asd
-    version: 0.0.1
-  labels:
-    codefresh.io/promotion: 'true'
