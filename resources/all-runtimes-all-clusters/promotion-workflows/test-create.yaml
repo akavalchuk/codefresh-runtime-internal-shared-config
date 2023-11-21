@@ -3,7 +3,7 @@ metadata:
   name: test-create
   annotations:
     description: decr
-    version: 0.0.1
+    version: 0.0.3
   labels:
     codefresh.io/promotion: 'true'
 arguments:
