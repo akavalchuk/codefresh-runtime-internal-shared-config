@@ -1,0 +1,33 @@
+apiVersion: argoproj.io/v1alpha1
+kind: WorkflowTemplate
+metadata:
+  name: asd
+  labels:
+    codefresh.io/promotion: 'true'
+  annotations:
+    version: 0.0.1
+    description: cccc
+spec:
+  arguments:
+    parameters:
+      - name: message
+  entrypoint: echo
+  podGC:
+    strategy: OnWorkflowCompletion
+  serviceAccountName: codefresh-sa
+  templates:
+    - container:
+        args:
+          - '{{inputs.parameters.message}}'
+        command:
+          - echo
+        image: alpine
+        name: ''
+        resources: {}
+      inputs:
+        parameters:
+          - name: message
+            value: hello world
+      metadata: {}
+      name: echo
+      outputs: {}
