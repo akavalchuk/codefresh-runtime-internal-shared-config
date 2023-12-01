@@ -1,1 +1,1 @@
-# codefresh-runtime-internal-shared-configg
+# codefresh-runtime-internal-shared-config
