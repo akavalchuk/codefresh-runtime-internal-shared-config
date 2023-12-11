@@ -14,6 +14,8 @@ gitops-runtime:
       host: >-
         6328633923506348d65bb785-localfresh-runtime-20-11-23-1.aliaksandr-kavalchuk-frps.ngrok.io
       subdomainHost: aliaksandr-kavalchuk-frps.ngrok.io
+      protocol: websocket
+      port: 80
   app-proxy:
     env:
       CORS: http://local.codefresh.io
