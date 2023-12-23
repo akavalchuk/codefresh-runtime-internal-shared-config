@@ -15,7 +15,7 @@ spec:
   source:
     directory:
       include: >-
-        {all-runtimes-all-clusters/*.yaml,all-runtimes-all-clusters/**/*.yaml,runtimes/localfresh-runtime-20-11-23-1/*.yaml,runtimes/localfresh-runtime-20-11-23-1/**/*.yaml,control-planes/*.yaml,control-planes/**/*.yaml,localfresh-runtime-20-11-23-1/cf-gitops-runtime.yaml}
+        {all-runtimes-all-clusters/*.yaml,all-runtimes-all-clusters/**/*.yaml,runtimes/localfresh-runtime-20-11-23-1/*.yaml,runtimes/localfresh-runtime-20-11-23-1/**/*.yaml,control-planes/*.yaml,control-planes/**/*.yaml,localfresh-runtime-20-11-23-1/cf-gitops-runtime.yaml,localfresh-runtime-20-11-23-1/test.yaml}
       recurse: true
     path: resources
     repoURL: https://github.com/akavalchuk/codefresh-runtime-internal-shared-config.git
