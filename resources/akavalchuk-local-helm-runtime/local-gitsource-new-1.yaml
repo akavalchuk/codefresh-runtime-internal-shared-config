@@ -1,0 +1,27 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: local-gitsource-new-1
+  labels:
+    codefresh.io/entity: 'git-source'
+    codefresh.io/internal: 'false'
+  finalizers:
+  - resources-finalizer.argocd.argoproj.io
+spec:
+  project: default
+  source:
+    repoURL: https://github.com/akavalchuk/local-gitshource-new-1.git
+    path: .
+    targetRevision: HEAD
+    directory:
+      include: '*'
+      exclude: ''
+      recurse: true
+  destination:
+    namespace: akavalchuk-local-helm-runtime
+    server: https://kubernetes.default.svc
+  syncPolicy:
+    automated:
+      allowEmpty: true
+      prune: true
+      selfHeal: true
