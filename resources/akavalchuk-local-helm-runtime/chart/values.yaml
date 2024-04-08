@@ -3,9 +3,9 @@ gitops-runtime:
     config:
       cors: http://local.codefresh.io,https://akavalchuk-platform.ngrok.io
       graphqlPlayground: 'true'
-    image:
-      pullPolicy: Always
-      tag: 1.2657.1-cr-22414-call-platform-d3241ec
+    # image:
+    #   pullPolicy: Always
+    #   tag: 1.2657.1-cr-22414-call-platform-d3241ec
   global:
     codefresh:
       url: https://akavalchuk-platform.ngrok.io
