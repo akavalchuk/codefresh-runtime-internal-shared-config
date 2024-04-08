@@ -6,6 +6,8 @@ apiVersion: argoproj.io/v1alpha1
 kind: WorkflowTemplate
 metadata:
   name: test-prom-wf
+  labels:
+    codefresh.io/promotion: 'true'
   annotations:
     description: test-desc
     version: 0.0.1
