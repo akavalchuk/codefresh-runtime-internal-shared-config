@@ -1,0 +1,21 @@
+apiVersion: codefresh.io/v1beta1
+kind: PromotionFlow
+metadata:
+  name: test-1
+  annotations:
+    description: idk
+spec:
+  triggerEnvironment: my-env
+  steps:
+    - environment: staging
+      dependsOn:
+        - my-env
+      policy:
+        action: commit
+        preAction: echo-3
+    - environment: production
+      dependsOn:
+        - staging
+      policy:
+        action: commit
+        postAction: echo-4
