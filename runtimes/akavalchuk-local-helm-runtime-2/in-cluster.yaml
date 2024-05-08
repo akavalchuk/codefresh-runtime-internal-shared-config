@@ -5,7 +5,7 @@ metadata:
     - resources-finalizer.argocd.argoproj.io
   labels:
     codefresh.io/entity: internal-config
-    codefresh.io/internal: "true"
+    codefresh.io/internal: 'true'
   name: in-cluster
 spec:
   destination:
@@ -14,7 +14,8 @@ spec:
   project: default
   source:
     directory:
-      include: '{all-runtimes-all-clusters/*.yaml,all-runtimes-all-clusters/**/*.yaml,runtimes/akavalchuk-local-helm-runtime-2/*.yaml,runtimes/akavalchuk-local-helm-runtime-2/**/*.yaml,control-planes/*.yaml,control-planes/**/*.yaml}'
+      include: >-
+        {akavalchuk-local-helm-runtime-2/akavalchuk-local-helm-runtime-2.yaml,all-runtimes-all-clusters/**/*.yaml,all-runtimes-all-clusters/*.yaml,control-planes/**/*.yaml,control-planes/*.yaml,runtimes/akavalchuk-local-helm-runtime-2/**/*.yaml,runtimes/akavalchuk-local-helm-runtime-2/*.yaml}
       recurse: true
     path: resources
     repoURL: https://github.com/akavalchuk/codefresh-runtime-internal-shared-config.git
@@ -25,4 +26,4 @@ spec:
       prune: true
       selfHeal: true
     syncOptions:
-    - allowEmpty=true
+      - allowEmpty=true
