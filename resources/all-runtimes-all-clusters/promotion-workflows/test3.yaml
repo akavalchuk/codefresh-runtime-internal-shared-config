@@ -1,0 +1,36 @@
+# DO NOT REMOVE the following attributes:
+# annotations.codefresh.io/workflow-origin (identifies type of Workflow Template as Promotion Workflow)
+# annotations.version (identifies version of Promotion Workflow used)
+# annotations.description (identifies intended use of the Promotion Workflow)
+apiVersion: argoproj.io/v1alpha1
+kind: WorkflowTemplate
+metadata:
+  name: test3
+  annotations:
+    description: kkkkkkkkkkk
+    version: 0.0.1
+    codefresh.io/workflow-origin: promotion
+spec:
+  arguments:
+    parameters:
+      - name: message
+  entrypoint: echo
+  podGC:
+    strategy: OnWorkflowCompletion
+  serviceAccountName: codefresh-sa
+  templates:
+    - container:
+        args:
+          - '{{inputs.parameters.message}}'
+        command:
+          - echo
+        image: alpine
+        name: ''
+        resources: {}
+      inputs:
+        parameters:
+          - name: message
+            value: hello world
+      metadata: {}
+      name: echo
+      outputs: {}
