@@ -12,10 +12,10 @@ spec:
         - my-env
       policy:
         action: commit
-        preAction: echo-3
+        preAction: test
     - environment: production
       dependsOn:
         - staging
       policy:
         action: commit
-        postAction: echo-4
+        postAction: test3
