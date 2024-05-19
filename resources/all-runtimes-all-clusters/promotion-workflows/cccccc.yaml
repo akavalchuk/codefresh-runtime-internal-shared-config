@@ -29,7 +29,7 @@ spec:
       inputs:
         parameters:
           - name: message
-            value: hello worlds
+            value: hello worldss
       metadata: {}
       name: echo
       outputs: {}
