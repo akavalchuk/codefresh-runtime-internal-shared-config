@@ -6,6 +6,7 @@ metadata:
     description: idk
 spec:
   triggerEnvironment: my-env
+  postTrigger: test2
   steps:
     - environment: staging
       dependsOn:
