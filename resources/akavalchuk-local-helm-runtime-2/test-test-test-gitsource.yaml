@@ -14,7 +14,7 @@ spec:
     path: .
     targetRevision: HEAD
     directory:
-      include: '.'
+      include: ''
       exclude: ''
       recurse: true
   destination:
