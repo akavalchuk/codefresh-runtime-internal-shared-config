@@ -2,4 +2,17 @@ apiVersion: codefresh.io/v1beta1
 kind: Product
 metadata:
   name: releases-test-product
-spec: {}
+spec:
+  promotionFlows:
+    - name: release-test-flow
+      gitTriggerSelectors:
+        - key: commitMessage
+          operator: In
+          values:
+            - promotion*
+    - name: release-test-flow
+      gitTriggerSelectors:
+        - key: commitMessage
+          operator: In
+          values:
+            - testttt
