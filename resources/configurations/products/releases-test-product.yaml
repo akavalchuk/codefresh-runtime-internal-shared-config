@@ -10,9 +10,3 @@ spec:
           operator: In
           values:
             - promotion*
-    - name: release-test-flow
-      gitTriggerSelectors:
-        - key: commitMessage
-          operator: In
-          values:
-            - promotion*
