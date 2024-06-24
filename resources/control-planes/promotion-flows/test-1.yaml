@@ -13,7 +13,7 @@ spec:
         - my-env
       policy:
         action: commit
-        preAction: test
+        preAction: test8
     - environment: production
       dependsOn:
         - staging
