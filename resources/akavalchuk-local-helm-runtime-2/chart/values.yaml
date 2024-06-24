@@ -20,6 +20,6 @@ gitops-runtime:
           - akavalchuk-local.rnd-sandbox.cf-infra.com
         protocol: https
       name: akavalchuk-local-helm-runtime-2
-      isConfigurationRuntime: true
+      isConfigurationRuntime: false
   installer:
     skipValidation: true
