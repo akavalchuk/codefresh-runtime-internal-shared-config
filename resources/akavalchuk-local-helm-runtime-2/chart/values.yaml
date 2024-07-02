@@ -14,12 +14,11 @@ gitops-runtime:
       cluster: https://kubernetes.default.svc
       codefreshHosted: false
       ingress:
-        className: nginx-internal
+        className: nginx-public
         enabled: true
         hosts:
-          - akavalchuk-local.rnd-sandbox.cf-infra.com
+          - akavalchuk-local.rnd.sandbox.codefresh.io
         protocol: https
       name: akavalchuk-local-helm-runtime-2
-      isConfigurationRuntime: true
   installer:
     skipValidation: true
