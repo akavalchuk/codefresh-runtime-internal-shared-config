@@ -20,5 +20,6 @@ gitops-runtime:
           - akavalchuk-local.rnd.sandbox.codefresh.io
         protocol: https
       name: akavalchuk-local-helm-runtime-kim
+      isConfigurationRuntime: true
   installer:
     skipValidation: true
