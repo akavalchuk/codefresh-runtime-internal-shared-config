@@ -1,0 +1,17 @@
+apiVersion: codefresh.io/v1beta1
+kind: PromotionFlow
+metadata:
+  name: manual-test
+  annotations:
+    description: ""
+spec:
+  triggerEnvironment: namespace-staging
+  steps:
+    - environment: namespace-production
+      dependsOn:
+        - namespace-staging
+      policy:
+        action: commit
+        postAction: test8
+        preAction: test9
+  postTrigger: test7
