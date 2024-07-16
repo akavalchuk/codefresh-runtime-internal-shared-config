@@ -20,5 +20,6 @@ gitops-runtime:
           - akavalchuk-local.rnd-sandbox.cf-infra.com
         protocol: https
       name: demo-runtime-eti-0
+      isConfigurationRuntime: true
   installer:
     skipValidation: true
