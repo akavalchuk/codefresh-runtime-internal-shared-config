@@ -15,7 +15,7 @@ spec:
   source:
     directory:
       include: >-
-        {all-runtimes-all-clusters/**/*.yaml,all-runtimes-all-clusters/*.yaml,control-planes/**/*.yaml,control-planes/*.yaml,demo-runtime-eti-0/demo-runtime-eti-0.yaml,demo-runtime-eti-0/test-gs.yaml,runtimes/demo-runtime-eti-0/**/*.yaml,runtimes/demo-runtime-eti-0/*.yaml}
+        {all-runtimes-all-clusters/**/*.yaml,all-runtimes-all-clusters/*.yaml,configurations/**/*.yaml,control-planes/**/*.yaml,control-planes/*.yaml,demo-runtime-eti-0/demo-runtime-eti-0.yaml,demo-runtime-eti-0/test-gs.yaml,runtimes/demo-runtime-eti-0/**/*.yaml,runtimes/demo-runtime-eti-0/*.yaml}
       recurse: true
     path: resources
     repoURL: https://github.com/akavalchuk/codefresh-runtime-internal-shared-config.git
