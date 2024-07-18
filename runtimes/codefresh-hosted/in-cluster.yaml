@@ -15,7 +15,7 @@ spec:
   source:
     directory:
       include: >-
-        {all-runtimes-all-clusters/**/*.yaml,all-runtimes-all-clusters/*.yaml,codefresh-hosted/aliaksandr-kavalchuk-codefresh-io-akav-demo-eks-cluste-rollouts.yaml,codefresh-hosted/aliaksandr-kavalchuk-codefresh-io-akav-demo-eks-cluster-us-ea-rollout-reporter.yaml,codefresh-hosted/codefresh-runtime-applications.yaml,codefresh-hosted/helm-gs-3.yaml,control-planes/**/*.yaml,control-planes/*.yaml,runtimes/codefresh-hosted/**/*.yaml,runtimes/codefresh-hosted/*.yaml}
+        {all-runtimes-all-clusters/**/*.yaml,all-runtimes-all-clusters/*.yaml,codefresh-hosted/aliaksandr-kavalchuk-codefresh-io-akav-demo-eks-cluste-rollouts.yaml,codefresh-hosted/aliaksandr-kavalchuk-codefresh-io-akav-demo-eks-cluster-us-ea-rollout-reporter.yaml,codefresh-hosted/arn-aws-eks-us-east-1-454353560595-cluster-alex-kavalc-rollouts.yaml,codefresh-hosted/arn-aws-eks-us-east-1-454353560595-cluster-alex-kavalchuk-rollout-reporter.yaml,codefresh-hosted/codefresh-runtime-applications.yaml,codefresh-hosted/helm-gs-3.yaml,control-planes/**/*.yaml,control-planes/*.yaml,runtimes/codefresh-hosted/**/*.yaml,runtimes/codefresh-hosted/*.yaml}
       recurse: true
     path: resources
     repoURL: https://github.com/akavalchuk/codefresh-runtime-internal-shared-config.git
