@@ -1,0 +1,23 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: akavalchuk-local-helm-runtime-5
+  labels:
+    codefresh.io/entity: runtime
+    codefresh.io/internal: 'true'
+spec:
+  project: default
+  source:
+    repoURL: https://github.com/akavalchuk/codefresh-runtime-internal-shared-config.git
+    targetRevision: HEAD
+    path: resources/akavalchuk-local-helm-runtime-5/chart
+    helm:
+      releaseName: akavalchuk-local-helm-runtime-5
+  destination:
+    namespace: akavalchuk-local-helm-runtime-5
+    server: https://kubernetes.default.svc
+  syncPolicy:
+    automated:
+      allowEmpty: true
+      prune: true
+      selfHeal: true
