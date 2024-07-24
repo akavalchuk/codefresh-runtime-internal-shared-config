@@ -12,6 +12,3 @@ spec:
         - namespace-staging
       policy:
         action: commit
-        postAction: test8
-        preAction: test9
-  postTrigger: test7
