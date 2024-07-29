@@ -24,7 +24,7 @@ spec:
         args:
           - '{{inputs.parameters.message}}'
         command:
-          - echo
+          - exit 1
         image: alpine
         name: ''
         resources: {}
