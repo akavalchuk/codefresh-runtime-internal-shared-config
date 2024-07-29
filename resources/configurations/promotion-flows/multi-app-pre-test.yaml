@@ -1,0 +1,15 @@
+apiVersion: codefresh.io/v1beta1
+kind: PromotionFlow
+metadata:
+  name: multi-app-pre-test
+  annotations:
+    description: ""
+spec:
+  triggerEnvironment: namespace-staging
+  steps:
+    - environment: namespace-production
+      dependsOn:
+        - namespace-staging
+      policy:
+        action: commit
+        preAction: test7
