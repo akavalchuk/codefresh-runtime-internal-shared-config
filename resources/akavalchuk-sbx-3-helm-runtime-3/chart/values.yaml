@@ -21,5 +21,6 @@ gitops-runtime:
           - alex-kavalchuk-sandbox.rnd-sandbox.cf-infra.com
         protocol: https
       name: akavalchuk-sbx-3-helm-runtime-3
+      isConfigurationRuntime: true
   installer:
     skipValidation: true
