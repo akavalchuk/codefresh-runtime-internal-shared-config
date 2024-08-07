@@ -1,0 +1,25 @@
+gitops-runtime:
+  app-proxy:
+    config:
+      cors: >-
+        http://local.codefresh.io,https://akavalchuk-platform.ngrok.io,https://sandbox-3.codefresh.io
+      graphqlPlayground: 'true'
+  global:
+    codefresh:
+      url: https://sandbox-3.codefresh.io
+      userToken:
+        secretKeyRef:
+          name: codefresh-user-token
+          key: token
+    runtime:
+      cluster: https://kubernetes.default.svc
+      codefreshHosted: false
+      ingress:
+        className: nginx-internal
+        enabled: true
+        hosts:
+          - alex-kavalchuk-sandbox.rnd-sandbox.cf-infra.com
+        protocol: https
+      name: akavalchuk-sbx-3-helm-runtime-3
+  installer:
+    skipValidation: true
