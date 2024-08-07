@@ -1,0 +1,27 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: gs-3
+  labels:
+    codefresh.io/entity: 'git-source'
+    codefresh.io/internal: 'false'
+  finalizers:
+  - resources-finalizer.argocd.argoproj.io
+spec:
+  project: default
+  source:
+    repoURL: https://github.com/akavalchuk/local-gs-helm-3.git
+    path: .
+    targetRevision: HEAD
+    directory:
+      include: '*'
+      exclude: ''
+      recurse: true
+  destination:
+    namespace: akavalchuk-sbx-3-helm-runtime-3
+    server: https://kubernetes.default.svc
+  syncPolicy:
+    automated:
+      allowEmpty: true
+      prune: true
+      selfHeal: true
