@@ -12,3 +12,4 @@ spec:
         - staging
       policy:
         preAction: test9
+        postAction: test7
