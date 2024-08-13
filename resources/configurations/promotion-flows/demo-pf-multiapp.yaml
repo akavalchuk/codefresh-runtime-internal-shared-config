@@ -10,3 +10,5 @@ spec:
     - environment: production
       dependsOn:
         - staging
+      policy:
+        preAction: test9
