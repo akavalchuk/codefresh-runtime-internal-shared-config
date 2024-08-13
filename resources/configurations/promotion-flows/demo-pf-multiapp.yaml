@@ -11,5 +11,4 @@ spec:
       dependsOn:
         - staging
       policy:
-        preAction: test9
-        postAction: test7
+        preAction: test8
