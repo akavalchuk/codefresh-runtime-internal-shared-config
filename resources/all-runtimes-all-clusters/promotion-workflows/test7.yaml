@@ -35,18 +35,3 @@ spec:
       metadata: {}
       name: echo
       outputs: {}
-    - container:
-        args:
-          - '{{inputs.parameters.message}}'
-        command:
-          - echo
-        image: alpine
-        name: ''
-        resources: {}
-      inputs:
-        parameters:
-          - name: message
-            value: hello world
-      metadata: {}
-      name: echo2
-      outputs: {}
