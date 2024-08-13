@@ -27,4 +27,5 @@ spec:
         source: |
           import random
           i = random.randint(0, 1)
+          print("status code: ", i)
           exit(i)
