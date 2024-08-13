@@ -1,0 +1,12 @@
+apiVersion: codefresh.io/v1beta1
+kind: PromotionFlow
+metadata:
+  name: demo-pf-multiapp
+  annotations:
+    description: ""
+spec:
+  triggerEnvironment: staging
+  steps:
+    - environment: production
+      dependsOn:
+        - staging
