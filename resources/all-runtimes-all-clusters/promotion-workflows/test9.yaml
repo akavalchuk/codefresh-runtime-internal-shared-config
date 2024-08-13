@@ -14,6 +14,7 @@ spec:
   arguments:
     parameters:
       - name: message
+        value: hi
   entrypoint: echo
   podGC:
     strategy: OnWorkflowCompletion
