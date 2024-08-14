@@ -15,7 +15,7 @@ spec:
   source:
     directory:
       include: >-
-        {akav-demo-helm-runtime-2/akav-demo-helm-runtime-2.yaml,akav-demo-helm-runtime-2/gs-3.yaml,all-runtimes-all-clusters/**/*.yaml,all-runtimes-all-clusters/*.yaml,control-planes/**/*.yaml,control-planes/*.yaml,runtimes/akav-demo-helm-runtime-2/**/*.yaml,runtimes/akav-demo-helm-runtime-2/*.yaml}
+        {akav-demo-helm-runtime-2/akav-demo-helm-runtime-2.yaml,akav-demo-helm-runtime-2/gs-3.yaml,all-runtimes-all-clusters/**/*.yaml,all-runtimes-all-clusters/*.yaml,configurations/**/*.yaml,control-planes/**/*.yaml,control-planes/*.yaml,runtimes/akav-demo-helm-runtime-2/**/*.yaml,runtimes/akav-demo-helm-runtime-2/*.yaml}
       recurse: true
     path: resources
     repoURL: https://github.com/akavalchuk/codefresh-runtime-internal-shared-config.git
