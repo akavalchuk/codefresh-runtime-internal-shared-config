@@ -25,7 +25,8 @@ spec:
         image: python:alpine3.6
         command: [python]
         source: |
-          import random
-          i = random.randint(0, 1)
-          print("status code: ", i)
-          exit(i)
+          import time
+          print("sleep")
+          time.sleep(60)
+          print("Whoah")
+          exit(0)
