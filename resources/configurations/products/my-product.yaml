@@ -15,4 +15,4 @@ spec:
         - key: commitMessage
           operator: In
           values:
-            - multiapp*
+            - multiap*
