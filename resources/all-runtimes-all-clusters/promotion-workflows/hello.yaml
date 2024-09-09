@@ -14,7 +14,7 @@ metadata:
       This Workflow Template is an example of a post-promotion workflow that
       uses a script template to display application details, commit information,
       and the Argo CD host, taking these parameters from the promotion flow
-      process.
+      process.s
     argo-hub/categories: promotion example workflow
     argo-hub/license: MIT
     argo-hub/owner_name: Eti Zaguri
