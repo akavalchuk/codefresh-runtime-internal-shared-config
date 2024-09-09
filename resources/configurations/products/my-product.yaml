@@ -9,7 +9,7 @@ spec:
         - key: commitMessage
           operator: In
           values:
-            - promotion*
+            - *promotion*
     - name: multi-app-pre-test
       gitTriggerSelectors:
         - key: commitMessage
