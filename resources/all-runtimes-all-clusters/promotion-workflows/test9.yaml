@@ -29,4 +29,4 @@ spec:
           print("sleep")
           time.sleep(60)
           print("Whoah")
-          exit(0)
+          exit(1)
