@@ -15,7 +15,7 @@ spec:
   source:
     directory:
       include: >-
-        {all-runtimes-all-clusters/**/*.yaml,all-runtimes-all-clusters/*.yaml,control-planes/**/*.yaml,control-planes/*.yaml,runtimes/akavalchuk-sbx-3-helm-runtime-5/**/*.yaml,runtimes/akavalchuk-sbx-3-helm-runtime-5/*.yaml}
+        {akavalchuk-sbx-3-helm-runtime-5/akavalchuk-sbx-3-helm-runtime-5.yaml,all-runtimes-all-clusters/**/*.yaml,all-runtimes-all-clusters/*.yaml,control-planes/**/*.yaml,control-planes/*.yaml,runtimes/akavalchuk-sbx-3-helm-runtime-5/**/*.yaml,runtimes/akavalchuk-sbx-3-helm-runtime-5/*.yaml}
       recurse: true
     path: resources
     repoURL: https://github.com/akavalchuk/codefresh-runtime-internal-shared-config.git
