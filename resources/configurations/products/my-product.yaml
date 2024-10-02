@@ -1,18 +1,4 @@
-#apiVersion: codefresh.io/v1beta1
-#kind: Product
-#metadata:
-#  name: my-product
-#spec:
-#  promotionFlows:
-#    - name: manual-test
-#      gitTriggerSelectors:
-#        - key: commitMessage
-#          operator: In
-#          values:
-#            - *promotion*
-#    - name: multi-app-pre-test
-#      gitTriggerSelectors:
-#        - key: commitMessage
-#          operator: In
-#          values:
-#            - multiap*
+apiVersion: codefresh.io/v1beta1
+kind: Product
+metadata:
+  name: my-product
