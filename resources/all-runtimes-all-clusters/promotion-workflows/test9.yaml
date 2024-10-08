@@ -14,7 +14,6 @@ spec:
   arguments:
     parameters:
       - name: message
-        value: hi
   entrypoint: gen-random-int
   podGC:
     strategy: OnWorkflowCompletion
