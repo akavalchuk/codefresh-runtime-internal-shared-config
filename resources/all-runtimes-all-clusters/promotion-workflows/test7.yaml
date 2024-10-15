@@ -15,12 +15,12 @@ spec:
     parameters:
       - name: message
         value: hello
-  entrypoint: echo3
+  entrypoint: echo
   podGC:
     strategy: OnWorkflowCompletion
   serviceAccountName: codefresh-sa
   templates:
-    - name: echo3
+    - name: echo
       script:
         image: python:alpine3.6
         command: [python]
