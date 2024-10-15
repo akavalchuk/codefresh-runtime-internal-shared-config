@@ -15,19 +15,19 @@ spec:
     parameters:
       - name: message
         value: hello
-  entrypoint: echo2
+  entrypoint: echo
   podGC:
     strategy: OnWorkflowCompletion
   serviceAccountName: codefresh-sa
   templates:
-    - name: echo2
+    - name: echo
       script:
         image: python:alpine3.6
         command: [python]
         source: |
           import time
+          time.sleep(60)
           print("Whoah")
-          exit(3)
     - name: echo2
       script:
         image: python:alpine3.6
