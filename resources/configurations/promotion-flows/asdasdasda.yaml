@@ -10,3 +10,6 @@ spec:
     - environment: production
       dependsOn:
         - staging
+      policy:
+        action: commit
+        preAction: test17
