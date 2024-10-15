@@ -28,3 +28,27 @@ spec:
           import time
           print("Whoah")
           exit(3)
+    - name: echo2
+      script:
+        image: python:alpine3.6
+        command: [python]
+        source: |
+          import time
+          time.sleep(60)
+          print("Whoah")
+    - name: echo3
+      script:
+        image: python:alpine3.6
+        command: [python]
+        source: |
+          import time
+          time.sleep(60)
+          print("Whoah")
+    - name: echo4
+      script:
+        image: python:alpine3.6
+        command: [python]
+        source: |
+          import time
+          time.sleep(60)
+          print("Whoah")
