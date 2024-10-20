@@ -28,6 +28,7 @@ spec:
           import time
           time.sleep(60)
           print("Whoah")
+          exit(1)
     - name: echo2
       script:
         image: python:alpine3.6
