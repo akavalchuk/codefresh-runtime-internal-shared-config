@@ -36,6 +36,7 @@ spec:
           import time
           time.sleep(60)
           print("Whoah")
+          exit(1)
     - name: echo3
       script:
         image: python:alpine3.6
