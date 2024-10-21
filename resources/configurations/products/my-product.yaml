@@ -2,3 +2,11 @@ apiVersion: codefresh.io/v1beta1
 kind: Product
 metadata:
   name: my-product
+spec:
+  promotionFlows:
+    - name: empty-env
+      gitTriggerSelectors:
+        - key: commitMessage
+          operator: In
+          values:
+            - test-empty
