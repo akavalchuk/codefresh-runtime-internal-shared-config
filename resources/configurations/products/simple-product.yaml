@@ -1,0 +1,12 @@
+apiVersion: codefresh.io/v1beta1
+kind: Product
+metadata:
+  name: simple-product
+spec:
+  promotionFlows:
+    - name: bruh
+      gitTriggerSelectors:
+        - key: commitMessage
+          operator: In
+          values:
+            - test-empty
