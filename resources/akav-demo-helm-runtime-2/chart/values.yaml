@@ -1,14 +1,14 @@
 gitops-runtime:
   gitops-operator:
     image:
-      tag: v0.2.13
-  app-proxy:
-    image:
-      tag: 1.3059.0
-      pullPolicy: Always
-    config:
-      cors: http://local.codefresh.io,https://akavalchuk-platform.ngrok.io
-      graphqlPlayground: 'true'
+      tag: v0.3.8
+  # app-proxy:
+  #   image:
+  #     tag: 1.3059.0
+  #     pullPolicy: Always
+  #   config:
+  #     cors: http://local.codefresh.io,https://akavalchuk-platform.ngrok.io
+  #     graphqlPlayground: 'true'
   global:
     codefresh:
       url: https://akavalchuk-platform.ngrok.io
