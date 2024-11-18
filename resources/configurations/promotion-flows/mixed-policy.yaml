@@ -1,0 +1,17 @@
+apiVersion: codefresh.io/v1beta1
+kind: PromotionFlow
+metadata:
+  name: mixed-policy
+  annotations:
+    description: ""
+spec:
+  triggerEnvironment: staging
+  steps:
+    - environment: production
+      dependsOn:
+        - staging
+    - environment: test-2
+      dependsOn:
+        - staging
+      policy:
+        action: pr
