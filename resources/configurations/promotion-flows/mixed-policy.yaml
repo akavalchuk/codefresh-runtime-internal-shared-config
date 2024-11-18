@@ -17,3 +17,9 @@ spec:
         - staging
       policy:
         action: pr
+    - environment: test-3
+      dependsOn:
+        - production
+        - test-2
+      policy:
+        action: pr
