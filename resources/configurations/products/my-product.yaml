@@ -4,7 +4,7 @@ metadata:
   name: my-product
 spec:
   promotionFlows:
-    - name: bruh
+    - name: no-pf-test
       gitTriggerSelectors:
         - key: commitMessage
           operator: In
