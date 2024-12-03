@@ -10,3 +10,9 @@ spec:
           operator: In
           values:
             - test-empty
+    - name: bruh
+      gitTriggerSelectors:
+        - key: commitMessage
+          operator: In
+          values:
+            - bruh
