@@ -1,4 +1,8 @@
 gitops-runtime:
+  gitops-operator:
+    image:
+      tag: cr-25966-a017490
+      pullPolicy: Always
   app-proxy:
     config:
       cors: >-
