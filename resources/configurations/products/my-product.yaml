@@ -16,3 +16,7 @@ spec:
           operator: In
           values:
             - bruh
+  promotionTemplate:
+    versionSource:
+      file: guestbook-ui-deployment.yaml
+      jsonPath: metadata.labels.version
