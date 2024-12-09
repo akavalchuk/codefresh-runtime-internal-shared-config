@@ -1,11 +1,11 @@
 gitops-runtime:
-  gitops-operator:
-    image:
-      tag: v0.3.8
+  # gitops-operator:
+    # image:
+      # tag: v0.3.8
   app-proxy:
-    image:
-      tag: 1.3125.0-CR-25542-improve-git-locks-32001fd
-      pullPolicy: Always
+    # image:
+    #   tag: 1.3125.0-CR-25542-improve-git-locks-32001fd
+    #   pullPolicy: Always
     config:
       cors: http://local.codefresh.io,https://akavalchuk-platform.ngrok.io
       graphqlPlayground: 'true'
