@@ -1,7 +1,7 @@
 gitops-runtime:
-  # gitops-operator:
-    # image:
-      # tag: v0.3.8
+  gitops-operator:
+    image:
+      tag: v0.3.16
   app-proxy:
     # image:
     #   tag: 1.3125.0-CR-25542-improve-git-locks-32001fd
