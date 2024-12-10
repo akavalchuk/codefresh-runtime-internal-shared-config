@@ -1,7 +1,7 @@
 gitops-runtime:
   gitops-operator:
     image:
-      tag: v0.3.16
+      tag: v0.3.12
   app-proxy:
     image:
       tag: 1.3146.0
