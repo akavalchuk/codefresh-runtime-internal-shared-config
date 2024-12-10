@@ -16,8 +16,8 @@ spec:
   destination:
     namespace: akav-demo-helm-runtime-2
     server: https://kubernetes.default.svc
-  # syncPolicy:
-  #   automated:
-  #     allowEmpty: true
-  #     prune: true
-  #     selfHeal: true
+  syncPolicy:
+    automated:
+      allowEmpty: true
+      prune: true
+      selfHeal: true
