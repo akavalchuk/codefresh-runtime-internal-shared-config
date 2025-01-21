@@ -5,10 +5,11 @@ metadata:
   annotations:
     description: ""
 spec:
-  triggerEnvironment: namespace-staging
+  triggerEnvironment: staging
   steps:
-    - environment: namespace-production
+    - environment: production
       dependsOn:
-        - namespace-staging
+        - staging
       policy:
-        action: commit
+        action: pr
+  postTrigger: test9
