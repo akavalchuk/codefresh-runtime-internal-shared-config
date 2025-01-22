@@ -3,4 +3,4 @@ kind: Product
 metadata:
   name: test-3
 spec:
-  concurrency: queue
+  concurrency: terminate
