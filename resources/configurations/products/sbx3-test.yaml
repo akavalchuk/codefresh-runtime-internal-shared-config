@@ -3,4 +3,11 @@ kind: Product
 metadata:
   name: sbx3-test
 spec:
+  promotionFlows:
+    - name: no-pf-test
+      gitTriggerSelectors:
+        - key: commitMessage
+          operator: In
+          values:
+            - test
   concurrency: queue
