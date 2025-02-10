@@ -22,6 +22,12 @@ spec:
         - staging
       policy:
         action: pr
+    - environment: test-3
+      dependsOn:
+        - production
+        - test-2
+      policy:
+        action: commit
   onStart: test4
   onSuccess: test5
   onFail: test6
