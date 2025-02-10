@@ -17,6 +17,11 @@ spec:
       onFail: test9
       onStart: test7
       onSuccess: test8
+    - environment: test-2
+      dependsOn:
+        - staging
+      policy:
+        action: pr
   onStart: test4
   onSuccess: test5
   onFail: test6
