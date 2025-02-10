@@ -25,7 +25,6 @@ spec:
         image: python:alpine3.6
         command: [python]
         source: |
-          exit 1
           import time
           time.sleep(1)
           print("Whoah")
@@ -35,16 +34,13 @@ spec:
         command: [python]
         source: |
           import time
-          time.sleep(60)
           print("Whoah")
-          exit(1)
     - name: echo3
       script:
         image: python:alpine3.6
         command: [python]
         source: |
           import time
-          time.sleep(60)
           print("Whoah")
     - name: echo4
       script:
@@ -52,5 +48,4 @@ spec:
         command: [python]
         source: |
           import time
-          time.sleep(60)
           print("Whoah")
