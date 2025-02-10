@@ -12,6 +12,8 @@ spec:
         - staging
       policy:
         action: pr
+        preAction: test7
+        postAction: test7
       onFail: test9
       onStart: test7
       onSuccess: test8
