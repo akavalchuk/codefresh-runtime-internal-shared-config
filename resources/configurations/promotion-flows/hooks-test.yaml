@@ -11,7 +11,7 @@ spec:
       dependsOn:
         - staging
       policy:
-        action: pr
+        action: commit
         preAction: test7
         postAction: test7
       onFail: test9
@@ -21,7 +21,7 @@ spec:
       dependsOn:
         - staging
       policy:
-        action: pr
+        action: commit
     - environment: test-3
       dependsOn:
         - production
