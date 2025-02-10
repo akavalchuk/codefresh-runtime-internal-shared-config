@@ -7,31 +7,26 @@ kind: WorkflowTemplate
 metadata:
   name: test8
   annotations:
-    description: mmmm
+    description: m
     version: 0.0.1
     codefresh.io/workflow-origin: promotion
 spec:
   arguments:
     parameters:
       - name: message
-        value: asd
-  entrypoint: echo
+        value: test
+  entrypoint: gen-random-int
   podGC:
     strategy: OnWorkflowCompletion
   serviceAccountName: codefresh-sa
   templates:
-    - container:
-        args:
-          - '{{inputs.parameters.message}}'
-        command:
-          - echo
-        image: alpine
-        name: ''
-        resources: {}
-      inputs:
-        parameters:
-          - name: message
-            value: hello world
-      metadata: {}
-      name: echo
-      outputs: {}
+    - name: gen-random-int
+      script:
+        image: python:alpine3.6
+        command: [python]
+        source: |
+          import time
+          print("sleep")
+          time.sleep(1)
+          print("Whoah")
+          exit 1
