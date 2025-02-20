@@ -7,4 +7,3 @@ metadata:
 spec:
   triggerEnvironment: staging
   steps: []
-  onFail: test8
