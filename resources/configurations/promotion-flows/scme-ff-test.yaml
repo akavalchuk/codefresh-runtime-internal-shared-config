@@ -1,0 +1,10 @@
+apiVersion: codefresh.io/v1beta1
+kind: PromotionFlow
+metadata:
+  name: scme-ff-test
+  annotations:
+    description: ""
+spec:
+  triggerEnvironment: staging
+  steps: []
+  onFail: test8
