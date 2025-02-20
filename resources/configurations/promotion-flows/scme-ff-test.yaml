@@ -6,4 +6,9 @@ metadata:
     description: ""
 spec:
   triggerEnvironment: staging
-  steps: []
+  steps:
+    - environment: production
+      dependsOn:
+        - staging
+      policy:
+        action: commit
