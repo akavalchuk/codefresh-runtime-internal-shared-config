@@ -12,3 +12,4 @@ spec:
         - staging
       policy:
         action: commit
+  onFail: test8
