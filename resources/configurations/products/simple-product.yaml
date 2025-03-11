@@ -10,4 +10,4 @@ spec:
           operator: In
           values:
             - test-empty
-  concurrency: queue
+  concurrency: terminate
