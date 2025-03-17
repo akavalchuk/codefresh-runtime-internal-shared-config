@@ -27,6 +27,6 @@ spec:
         source: |
           import time
           print("sleep")
-          time.sleep(3)
+          time.sleep(1)
           print("Whoah")
           exit 1
