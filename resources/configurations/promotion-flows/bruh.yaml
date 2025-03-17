@@ -17,5 +17,5 @@ spec:
       dependsOn:
         - production
       policy:
-        action: pr
+        action: commit
         preAction: test8
