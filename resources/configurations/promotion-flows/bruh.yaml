@@ -13,3 +13,9 @@ spec:
       policy:
         action: commit
         preAction: test8
+    - environment: test-2
+      dependsOn:
+        - production
+      policy:
+        action: pr
+        preAction: test8
