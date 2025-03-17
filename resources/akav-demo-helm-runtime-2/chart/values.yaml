@@ -3,9 +3,6 @@ gitops-runtime:
     image:
       tag: v0.3.12
   app-proxy:
-    # image:
-    #   tag: 1.3146.0
-    #   pullPolicy: Always
     config:
       cors: http://local.codefresh.io,https://akavalchuk-platform.ngrok.io
       graphqlPlayground: 'true'
