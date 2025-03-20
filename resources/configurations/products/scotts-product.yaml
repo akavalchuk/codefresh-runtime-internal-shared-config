@@ -1,0 +1,18 @@
+apiVersion: codefresh.io/v1beta2
+kind: Product
+metadata:
+  name: scotts-product
+spec:
+  promotionTemplate:
+    versionSource:
+      file: Chart.yaml
+      jsonPath: $.appVersion
+    promotion:
+      templates/deployment.yaml:
+        jsonPaths:
+          - $.*.*.*.*.*.image
+      Chart.yaml:
+        jsonPaths:
+          - $.appVersion
+          - $.version
+  concurrency: queue
