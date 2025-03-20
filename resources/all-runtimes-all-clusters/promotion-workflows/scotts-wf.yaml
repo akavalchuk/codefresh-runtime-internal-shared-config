@@ -5,7 +5,7 @@
 apiVersion: argoproj.io/v1alpha1
 kind: WorkflowTemplate
 metadata:
-  name: test9
+  name: scotts-wf
   annotations:
     description: m
     version: 0.0.1
