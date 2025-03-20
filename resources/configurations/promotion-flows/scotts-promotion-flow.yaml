@@ -12,3 +12,5 @@ spec:
         - dev
       policy:
         action: commit
+  hooks:
+    onStart: scotts-wf
