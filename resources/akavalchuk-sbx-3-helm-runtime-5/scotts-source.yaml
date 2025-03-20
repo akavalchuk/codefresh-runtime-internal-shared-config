@@ -3,20 +3,20 @@ kind: Application
 metadata:
   name: scotts-source
   labels:
-    codefresh.io/entity: 'git-source'
+    codefresh.io/entity: git-source
     codefresh.io/internal: 'false'
   finalizers:
   - resources-finalizer.argocd.argoproj.io
 spec:
   project: cf-git-sources
   sources:
-    - repoURL: https://github.com/scme0/sand3-apps.git
-      path: git-source
-      targetRevision: main
-      directory:
-        include: '*'
-        exclude: ''
-        recurse: true
+  - repoURL: https://github.com/scme0/sand3-apps.git
+    path: git-source
+    targetRevision: main
+    directory:
+      include: ''
+      exclude: ''
+      recurse: true
   destination:
     namespace: akavalchuk-sbx-3-helm-runtime-5
     server: https://kubernetes.default.svc
