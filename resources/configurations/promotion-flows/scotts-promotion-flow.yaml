@@ -14,3 +14,5 @@ spec:
         action: commit
   hooks:
     onStart: scotts-wf
+    onSuccess: scotts-wf
+    onFail: scotts-wf
