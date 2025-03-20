@@ -3,6 +3,13 @@ kind: Product
 metadata:
   name: scotts-product
 spec:
+  promotionFlows:
+    - name: scotts-promotion-flow
+      gitTriggerSelectors:
+        - key: commitMessage
+          operator: In
+          values:
+            - '*run*'
   promotionTemplate:
     versionSource:
       file: Chart.yaml
