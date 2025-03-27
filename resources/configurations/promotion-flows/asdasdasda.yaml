@@ -12,4 +12,3 @@ spec:
         - staging
       policy:
         action: commit
-        preAction: test17
