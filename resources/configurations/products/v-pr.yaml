@@ -1,0 +1,13 @@
+apiVersion: codefresh.io/v1beta2
+kind: Product
+metadata:
+  name: v-pr
+spec:
+  promotionFlows:
+    - name: manual-test
+      gitTriggerSelectors:
+        - key: commitMessage
+          operator: In
+          values:
+            - '*vPR-*'
+  concurrency: terminate
