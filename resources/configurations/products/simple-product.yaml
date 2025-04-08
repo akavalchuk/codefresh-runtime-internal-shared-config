@@ -10,4 +10,8 @@ spec:
           operator: In
           values:
             - test-empty
+  promotionTemplate:
+    versionSource:
+      file: guestbook-ui-deployment.yaml
+      jsonPath: $.*.*.version
   concurrency: terminate
