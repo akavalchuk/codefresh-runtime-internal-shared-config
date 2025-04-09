@@ -14,4 +14,4 @@ spec:
     versionSource:
       file: guestbook-ui-deployment.yaml
       jsonPath: $.*.*.version
-  concurrency: terminate
+  concurrency: queue
