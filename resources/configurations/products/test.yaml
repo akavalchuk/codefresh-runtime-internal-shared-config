@@ -3,4 +3,10 @@ kind: Product
 metadata:
   name: test
 spec:
+  promotionTemplate:
+    promotion:
+      guestbook-ui-deployment.yaml:
+        jsonPaths:
+          - $.*.*.version
+          - $.*.name
   concurrency: queue
