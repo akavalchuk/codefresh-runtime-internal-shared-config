@@ -8,8 +8,6 @@ spec:
       guestbook-ui-deployment.yaml:
         jsonPaths:
           - $.*.*.version
-          - $.*.name
-          - $.*.revisionHistoryLimit
       guestbook-ui-svc.yaml:
         jsonPaths:
           - $.*.*.*.port
