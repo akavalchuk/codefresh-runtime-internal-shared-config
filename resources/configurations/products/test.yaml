@@ -9,4 +9,7 @@ spec:
         jsonPaths:
           - $.*.*.version
           - $.*.name
+      guestbook-ui-svc.yaml:
+        jsonPaths:
+          - $.*.*.*.port
   concurrency: queue
