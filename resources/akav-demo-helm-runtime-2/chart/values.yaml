@@ -1,7 +1,7 @@
 gitops-runtime:
-  gitops-operator:
-    image:
-      tag: v0.3.12
+  # gitops-operator:
+  #   image:
+  #     tag: v0.3.12
   app-proxy:
     config:
       cors: http://local.codefresh.io,https://akavalchuk-platform.ngrok.io
