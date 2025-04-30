@@ -4,7 +4,7 @@ metadata:
   name: simple-product
 spec:
   promotionFlows:
-    - name: bruh
+    - name: s-t3-p
       gitTriggerSelectors:
         - key: commitMessage
           operator: In
