@@ -1,0 +1,19 @@
+apiVersion: codefresh.io/v1beta1
+kind: PromotionFlow
+metadata:
+  name: s-t3-p
+  annotations:
+    description: ""
+spec:
+  triggerEnvironment: staging
+  steps:
+    - environment: test-3
+      dependsOn:
+        - staging
+      policy:
+        action: commit
+    - environment: production
+      dependsOn:
+        - test-3
+      policy:
+        action: commit
