@@ -17,7 +17,7 @@ spec:
     promotion:
       Chart.yaml:
         jsonPaths:
-          - $.appVersion
+          - $.version
       values.yaml:
         jsonPaths:
           - $.*.tag
