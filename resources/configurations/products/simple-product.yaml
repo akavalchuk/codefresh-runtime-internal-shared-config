@@ -13,7 +13,7 @@ spec:
   promotionTemplate:
     versionSource:
       file: Chart.yaml
-      jsonPath: $.appVersion
+      jsonPath: $.version
     promotion:
       Chart.yaml:
         jsonPaths:
