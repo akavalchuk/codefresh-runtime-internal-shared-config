@@ -1,0 +1,23 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: akav-kind-runtime
+  labels:
+    codefresh.io/entity: runtime
+    codefresh.io/internal: 'true'
+spec:
+  project: default
+  source:
+    repoURL: https://github.com/akavalchuk/codefresh-runtime-internal-shared-config.git
+    targetRevision: HEAD
+    path: resources/akav-demo-kind-runtime-1/chart
+    helm:
+      releaseName: akav-kind-runtime
+  destination:
+    namespace: gitops-runtime
+    server: https://kubernetes.default.svc
+  syncPolicy:
+    automated:
+      allowEmpty: true
+      prune: true
+      selfHeal: true
