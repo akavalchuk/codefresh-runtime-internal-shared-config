@@ -7,7 +7,7 @@ kind: WorkflowTemplate
 metadata:
   name: test7
   annotations:
-    description: nnns
+    description: nnnsd
     version: 0.0.1
     codefresh.io/workflow-origin: promotion
 spec:
