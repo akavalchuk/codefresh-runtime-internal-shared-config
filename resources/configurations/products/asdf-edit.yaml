@@ -1,4 +1,4 @@
 apiVersion: codefresh.io/v1beta1
 kind: Product
 metadata:
-  name: asdf-edit-3
+  name: asdf-edit-4
