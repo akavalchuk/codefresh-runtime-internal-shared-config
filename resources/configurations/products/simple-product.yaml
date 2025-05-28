@@ -12,13 +12,6 @@ spec:
             - test-empty
   promotionTemplate:
     versionSource:
-      file: Chart.yaml
-      jsonPath: $.version
-    promotion:
-      Chart.yaml:
-        jsonPaths:
-          - $.version
-      values.yaml:
-        jsonPaths:
-          - $.*.tag
+      file: guestbook-ui-deployment.yaml
+      jsonPath: $.*.*.version
   concurrency: queue
