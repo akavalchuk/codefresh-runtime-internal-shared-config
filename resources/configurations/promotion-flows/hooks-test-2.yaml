@@ -18,11 +18,6 @@ spec:
         onFail: test9
         onStart: test7
         onSuccess: test8
-    - environment: test-2
-      dependsOn:
-        - staging
-      policy:
-        action: commit
   hooks:
     onStart: test4
     onSuccess: test5
