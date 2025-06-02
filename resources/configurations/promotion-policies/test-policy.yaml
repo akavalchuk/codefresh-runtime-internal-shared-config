@@ -1,0 +1,17 @@
+apiVersion: codefresh.io/v1beta1
+kind: PromotionPolicy
+metadata:
+  name: test-policy
+spec:
+  priority: 1
+  selector:
+    product:
+      names:
+        - simple-product
+    targetEnvironment:
+      names:
+        - production
+  policy:
+    action: commit
+    preAction: test7
+    postAction: test7
