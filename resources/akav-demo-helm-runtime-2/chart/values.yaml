@@ -1,8 +1,14 @@
 gitops-runtime:
-  # gitops-operator:
-  #   image:
-  #     tag: v0.3.12
+  gitops-operator:
+    env:
+      GITOPS_OPERATOR_VERSION: 0.7.9
+    image:
+      pullPolicy: Always
+      tag: cr-29261-86428d8
   app-proxy:
+    image:
+      repository: quay.io/codefresh/dev/cap-app-proxy
+      tag: 1.3532.0-cr-29250-spare-b48efb4
     config:
       cors: http://local.codefresh.io,https://akavalchuk-platform.ngrok.io
       graphqlPlayground: 'true'
