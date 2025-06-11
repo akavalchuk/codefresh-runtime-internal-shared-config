@@ -19,7 +19,7 @@ spec:
         tasks:
           - name: echo
             templateRef:
-              name: simple-success
+              name: simple-success-1
               template: simple-success
           - name: suspend
             templateRef:
