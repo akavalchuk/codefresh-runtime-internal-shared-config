@@ -6,15 +6,14 @@ gitops-runtime:
       pullPolicy: Always
       tag: cr-29261-86428d8
   app-proxy:
-    image:
-      repository: quay.io/codefresh/dev/cap-app-proxy
-      tag: 1.3532.0-cr-29250-spare-b48efb4
     config:
       cors: http://local.codefresh.io,https://akavalchuk-platform.ngrok.io
       graphqlPlayground: 'true'
     image:
       # tag: 1.3228.0
       pullPolicy: Always
+      repository: quay.io/codefresh/dev/cap-app-proxy
+      tag: 1.3532.0-cr-29250-spare-b48efb4
   global:
     codefresh:
       url: https://akavalchuk-platform.ngrok.io
