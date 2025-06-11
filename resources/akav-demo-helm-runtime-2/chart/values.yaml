@@ -18,6 +18,7 @@ gitops-runtime:
   global:
     codefresh:
       url: https://akavalchuk-platform.ngrok.io
+      accountId: 669e06746fdd1cfa04f44e47
       userToken:
         secretKeyRef:
           name: codefresh-user-token
