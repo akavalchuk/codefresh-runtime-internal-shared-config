@@ -23,5 +23,5 @@ spec:
               template: simple-success
           - name: suspend
             templateRef:
-              name: akav-suspend-pw
+              name: akav-suspend-pw-1
               template: suspend-promotion
