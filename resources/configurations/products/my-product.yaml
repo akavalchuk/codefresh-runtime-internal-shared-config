@@ -20,4 +20,4 @@ spec:
     versionSource:
       file: guestbook-ui-deployment.yaml
       jsonPath: metadata.labels.version
-  concurrency: queue
+  concurrency: terminate
