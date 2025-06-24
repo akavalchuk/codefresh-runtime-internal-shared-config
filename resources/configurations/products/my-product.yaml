@@ -20,4 +20,8 @@ spec:
     versionSource:
       file: guestbook-ui-deployment.yaml
       jsonPath: metadata.labels.version
+    promotion:
+      ../pre-post-sync/pre-sync-job.yaml:
+        jsonPaths:
+          - $.*.*.*.*.*.*['1']
   concurrency: terminate
