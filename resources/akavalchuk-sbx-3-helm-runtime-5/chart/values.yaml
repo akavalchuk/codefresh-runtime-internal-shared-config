@@ -1,4 +1,7 @@
 gitops-runtime:
+  gitops-operator:
+    image:
+      tag: cr-29699-1e94aac
   app-proxy:
     config:
       cors: >-
