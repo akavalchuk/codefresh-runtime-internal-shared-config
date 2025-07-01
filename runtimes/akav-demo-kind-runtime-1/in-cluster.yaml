@@ -21,9 +21,9 @@ spec:
     repoURL: https://github.com/akavalchuk/codefresh-runtime-internal-shared-config.git
     targetRevision: HEAD
   syncPolicy:
-    automated:
-      allowEmpty: true
-      prune: true
-      selfHeal: true
+    # automated:
+    #   allowEmpty: true
+    #   prune: true
+    #   selfHeal: true
     syncOptions:
       - allowEmpty=true
