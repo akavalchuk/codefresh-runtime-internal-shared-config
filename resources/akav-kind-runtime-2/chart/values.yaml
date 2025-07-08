@@ -1,5 +1,5 @@
 gitops-runtime:
-  gitops-operator:
+  # gitops-operator:
     # enabled: false
   app-proxy:
     config:
