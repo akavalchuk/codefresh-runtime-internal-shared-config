@@ -1,0 +1,23 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: akavalchuk-sbx-2-helm-runtime
+  labels:
+    codefresh.io/entity: runtime
+    codefresh.io/internal: 'true'
+spec:
+  project: default
+  source:
+    repoURL: https://github.com/akavalchuk/codefresh-runtime-internal-shared-config.git
+    targetRevision: HEAD
+    path: resources/akavalchuk-sbx-2-helm-runtime/chart
+    helm:
+      releaseName: akavalchuk-sbx-2-helm-runtime
+  destination:
+    namespace: akavalchuk-sbx-2-helm-runtime
+    server: https://kubernetes.default.svc
+  syncPolicy:
+    automated:
+      allowEmpty: true
+      prune: true
+      selfHeal: true

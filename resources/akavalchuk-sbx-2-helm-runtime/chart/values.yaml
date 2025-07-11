@@ -1,4 +1,34 @@
 gitops-runtime:
+  app-proxy:
+    config:
+      cors: >-
+        http://local.codefresh.io,https://akavalchuk-platform.ngrok.io,https://sandbox-2.codefresh.io
+      graphqlPlayground: 'true'
+    image:
+      pullPolicy: Always
+      repository: quay.io/codefresh/dev/cap-app-proxy
+      tag: cr-28166
+    initContainer:
+      pullPolicy: Always
+      repository: quay.io/codefresh/dev/cap-app-proxy-init
+      tag: cr-28166
   global:
+    codefresh:
+      accountId: 6453c076291ce16ddb90de26
+      url: https://sandbox-2.codefresh.io
+      userToken:
+        secretKeyRef:
+          name: codefresh-user-token
+          key: token
     runtime:
-      isConfigurationRuntime: true
+      cluster: https://kubernetes.default.svc
+      codefreshHosted: false
+      ingress:
+        className: nginx-public
+        enabled: true
+        hosts:
+          - akavalchuk-sbx-2-helm-runtime.rnd.sandbox.codefresh.io
+        protocol: https
+      name: akavalchuk-sbx-2-helm-runtime
+  installer:
+    skipValidation: true
