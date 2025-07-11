@@ -1,4 +1,8 @@
 gitops-runtime:
+  gitops-operator:
+    image:
+      tag: 0.22.0
+      pullPolicy: Always
   app-proxy:
     config:
       cors: >-
