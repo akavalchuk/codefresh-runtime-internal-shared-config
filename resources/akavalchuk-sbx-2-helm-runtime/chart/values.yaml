@@ -1,7 +1,7 @@
 gitops-runtime:
   gitops-operator:
     image:
-      tag: 0.8.0
+      tag: v0.8.0
       pullPolicy: Always
   app-proxy:
     config:
