@@ -16,8 +16,8 @@ spec:
   destination:
     namespace: akavalchuk-sbx-2-helm-runtime
     server: https://kubernetes.default.svc
-  # syncPolicy:
-  #   automated:
-  #     allowEmpty: true
-  #     prune: true
-  #     selfHeal: true
+  syncPolicy:
+    automated:
+      allowEmpty: true
+      prune: true
+      selfHeal: true
