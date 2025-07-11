@@ -19,6 +19,6 @@ spec:
         onStart: test7
         onSuccess: test8
   hooks:
-    onStart: test4
+    onStart: test9
     onSuccess: test5
     onFail: test6
