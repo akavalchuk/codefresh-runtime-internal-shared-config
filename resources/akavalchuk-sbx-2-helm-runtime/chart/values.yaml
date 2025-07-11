@@ -30,5 +30,6 @@ gitops-runtime:
           - akavalchuk-sbx-2-helm-runtime.rnd.sandbox.codefresh.io
         protocol: https
       name: akavalchuk-sbx-2-helm-runtime
+      isConfigurationRuntime: true
   installer:
     skipValidation: true
