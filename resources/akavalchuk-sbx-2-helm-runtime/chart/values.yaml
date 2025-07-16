@@ -1,21 +1,21 @@
 gitops-runtime:
-  gitops-operator:
-    image:
-      tag: v0.8.0
-      pullPolicy: Always
+  # gitops-operator:
+  #   image:
+  #     tag: v0.8.0
+  #     pullPolicy: Always
   app-proxy:
     config:
       cors: >-
         http://local.codefresh.io,https://akavalchuk-platform.ngrok.io,https://sandbox-2.codefresh.io
       graphqlPlayground: 'true'
-    image:
-      pullPolicy: Always
-      repository: quay.io/codefresh/dev/cap-app-proxy
-      tag: cr-28166
-    initContainer:
-      pullPolicy: Always
-      repository: quay.io/codefresh/dev/cap-app-proxy-init
-      tag: cr-28166
+  #   image:
+  #     pullPolicy: Always
+  #     repository: quay.io/codefresh/dev/cap-app-proxy
+  #     tag: cr-28166
+  #   initContainer:
+  #     pullPolicy: Always
+  #     repository: quay.io/codefresh/dev/cap-app-proxy-init
+  #     tag: cr-28166
   global:
     codefresh:
       accountId: 6453c076291ce16ddb90de26
