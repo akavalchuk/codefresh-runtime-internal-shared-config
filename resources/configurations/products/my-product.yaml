@@ -21,7 +21,7 @@ spec:
       file: guestbook-ui-deployment.yaml
       jsonPath: metadata.labels.version
     promotion:
-      ../pre-post-sync/pre-sync-job.yaml:
+      guestbook-ui-deployment.yaml:
         jsonPaths:
-          - $.*.*.*.*.*.*['1']
+          - $.*.*.*.*.*.image
   concurrency: terminate
