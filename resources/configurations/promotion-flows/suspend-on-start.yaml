@@ -12,3 +12,5 @@ spec:
         - staging
       policy:
         action: commit
+  hooks:
+    onStart: akav-suspend-pw-1
