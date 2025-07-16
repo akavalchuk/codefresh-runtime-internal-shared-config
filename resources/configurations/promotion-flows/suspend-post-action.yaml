@@ -13,3 +13,4 @@ spec:
       policy:
         action: commit
         postAction: akav-suspend-pw-2
+        preAction: simple-success-1
