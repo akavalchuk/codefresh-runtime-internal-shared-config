@@ -1,8 +1,10 @@
 gitops-runtime:
-  # gitops-operator:
-  #   image:
-  #     tag: v0.8.0
-  #     pullPolicy: Always
+  gitops-operator:
+    env:
+      PROMOTION_WRAPPER_TEMPLATE: i-dont-exist
+    # image:
+    #   tag: v0.8.0
+    #   pullPolicy: Always
   app-proxy:
     config:
       cors: >-
