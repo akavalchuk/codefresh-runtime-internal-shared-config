@@ -11,10 +11,11 @@ spec:
       dependsOn:
         - staging
       policy:
-        action: pr
+        action: commit
         postAction: akav-suspend-pw-1
     - environment: production-2
       dependsOn:
         - staging
       policy:
-        action: pr
+        action: commit
+        postAction: failure-after-60s
