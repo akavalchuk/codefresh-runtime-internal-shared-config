@@ -11,6 +11,6 @@ spec:
       dependsOn:
         - staging
       policy:
-        action: commit
+        action: pr
         preAction: simple-success-1
         postAction: simple-success-1
