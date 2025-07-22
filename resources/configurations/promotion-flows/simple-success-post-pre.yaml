@@ -1,7 +1,7 @@
 apiVersion: codefresh.io/v1beta1
 kind: PromotionFlow
 metadata:
-  name: simple-success-post-pre
+  name: simple-success-post-pre-pr
   annotations:
     description: ""
 spec:
