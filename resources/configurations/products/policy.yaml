@@ -1,0 +1,7 @@
+apiVersion: codefresh.io/v1beta2
+kind: Product
+metadata:
+  name: policy
+spec:
+  promotionTemplateRef: gitops-platform
+  concurrency: queue
