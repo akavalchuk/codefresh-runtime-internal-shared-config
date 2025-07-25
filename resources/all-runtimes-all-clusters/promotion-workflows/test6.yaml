@@ -18,7 +18,7 @@ spec:
   entrypoint: echo
   podGC:
     strategy: OnWorkflowCompletion
-  serviceAccountName: default
+  serviceAccountName: internal-router
   templates:
     - container:
         args:
