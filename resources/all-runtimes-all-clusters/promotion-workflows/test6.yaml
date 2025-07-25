@@ -18,7 +18,7 @@ spec:
   entrypoint: echo
   podGC:
     strategy: OnWorkflowCompletion
-  serviceAccountName: codefresh-sa
+  serviceAccountName: codefresh-sa-test
   templates:
     - container:
         args:
