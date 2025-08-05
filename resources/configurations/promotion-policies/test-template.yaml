@@ -3,8 +3,10 @@ kind: PromotionTemplate
 metadata:
   name: test-template
 spec:
-  applicationSourceSelector: {}
-  priority: 2
+  applicationSourceSelector:
+    matchLabels:
+      codefresh.io/product: test-product
+  priority: 1
   versionSource:
     file: requirements.yaml
     jsonPath: "$.dependencies[0].version"
