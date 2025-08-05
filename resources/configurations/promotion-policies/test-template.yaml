@@ -3,9 +3,8 @@ kind: PromotionTemplate
 metadata:
   name: test-template
 spec:
-  applicationSourceSelector:
-    matchLabels:
-      codefresh.io/product: gitops-platform
+  applicationSourceSelector: {}
+  priority: 2
   versionSource:
     file: requirements.yaml
     jsonPath: "$.dependencies[0].version"
