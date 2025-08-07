@@ -1,4 +1,0 @@
-apiVersion: codefresh.io/v1beta2
-kind: Product
-metadata:
-  name: v2test
