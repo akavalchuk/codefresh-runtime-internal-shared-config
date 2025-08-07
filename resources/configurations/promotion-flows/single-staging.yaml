@@ -6,3 +6,5 @@ metadata:
     description: ""
 spec:
   triggerEnvironment: staging
+  hooks:
+    onSuccess: simple-success-1
