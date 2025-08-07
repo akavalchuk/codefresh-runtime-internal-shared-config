@@ -1,0 +1,16 @@
+apiVersion: codefresh.io/v1beta1
+kind: PromotionFlow
+metadata:
+  name: stg-prd-3min-delay
+  annotations:
+    description: ""
+spec:
+  triggerEnvironment: staging
+  steps:
+    - environment: production
+      dependsOn:
+        - staging
+      policy:
+        action: commit
+  hooks:
+    onStart: 3mins-delay
