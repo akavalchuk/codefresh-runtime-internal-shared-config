@@ -8,7 +8,7 @@ metadata:
   name: test10
   annotations:
     description: kkkkkkkk
-    version: 0.0.1
+    version: 0.0.2
     codefresh.io/workflow-origin: promotion
 spec:
   arguments:
