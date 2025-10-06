@@ -17,9 +17,6 @@ spec:
           values:
             - bruh
   promotionTemplate:
-    versionSource:
-      file: guestbook-ui-deployment.yaml
-      jsonPath: metadata.labels.version
     promotion:
       guestbook-ui-deployment.yaml:
         jsonPaths:
