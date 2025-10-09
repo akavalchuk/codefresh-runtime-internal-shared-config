@@ -24,4 +24,4 @@ spec:
       guestbook-ui-deployment.yaml:
         jsonPaths:
           - $.*.*.*.*.*.image
-  concurrency: queue
+  concurrency: terminate
