@@ -1,0 +1,58 @@
+```yaml
+apiVersion: argoproj.io/v1alpha1
+kind: WorkflowTemplate
+metadata:
+  name: pre-action
+spec:
+  entrypoint: create-jira-ticket
+  templates:
+  - name: create-jira-ticket
+    container:
+      image: atlassianlabs/jira-cli:latest
+      command: ["/bin/sh", "-c"]
+      args:
+        - |
+          jira_url=$(cat /jira-secret/jira_url)
+          jira_user=$(cat /jira-secret/jira_user)
+          jira_token=$(cat /jira-secret/jira_token)
+          jira_project=$(cat /jira-secret/jira_project)
+          jira_summary="Automated ticket created by Argo"
+          jira_description="This ticket was automatically created by the Argo pre-action workflow."
+          jira-cli --server "$jira_url" --user "$jira_user" --token "$jira_token" \
+            issue create --project "$jira_project" --summary "$jira_summary" --description "$jira_description" --type Task
+      volumeMounts:
+      - name: jira-secret
+        mountPath: /jira-secret
+        readOnly: true
+    volumes:
+    - name: jira-secret
+      secret:
+        secretName: jira-auth
+```
+
+```yaml
+apiVersion: argoproj.io/v1alpha1
+kind: WorkflowTemplate
+metadata:
+  name: post-action
+spec:
+  entrypoint: send-slack-message
+  templates:
+  - name: send-slack-message
+    container:
+      image: curlimages/curl:7.78.0
+      command: ["/bin/sh", "-c"]
+      args:
+        - |
+          webhook_url=$(cat /slack-secret/webhook_url)
+          payload='{"text":"This is an automated notification from the Argo post-action workflow."}'
+          curl -X POST -H 'Content-type: application/json' --data "$payload" "$webhook_url"
+      volumeMounts:
+      - name: slack-secret
+        mountPath: /slack-secret
+        readOnly: true
+    volumes:
+    - name: slack-secret
+      secret:
+        secretName: slack-webhook
+```
