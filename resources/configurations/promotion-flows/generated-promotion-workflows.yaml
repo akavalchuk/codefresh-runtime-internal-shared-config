@@ -1,4 +1,3 @@
-```yaml
 apiVersion: argoproj.io/v1alpha1
 kind: WorkflowTemplate
 metadata:
@@ -8,29 +7,41 @@ spec:
   templates:
   - name: create-jira-ticket
     container:
-      image: atlassianlabs/jira-cli:latest
+      image: curlimages/curl:7.78.0
       command: ["/bin/sh", "-c"]
+      envFrom:
+        - secretRef:
+            name: jira-auth
+      env:
+        - name: JIRA_URL
+          valueFrom:
+            secretKeyRef:
+              name: jira-auth
+              key: url
+        - name: JIRA_PROJECT_KEY
+          valueFrom:
+            secretKeyRef:
+              name: jira-auth
+              key: projectKey
+        - name: JIRA_USERNAME
+          valueFrom:
+            secretKeyRef:
+              name: jira-auth
+              key: username
+        - name: JIRA_API_TOKEN
+          valueFrom:
+            secretKeyRef:
+              name: jira-auth
+              key: apiToken
       args:
         - |
-          jira_url=$(cat /jira-secret/jira_url)
-          jira_user=$(cat /jira-secret/jira_user)
-          jira_token=$(cat /jira-secret/jira_token)
-          jira_project=$(cat /jira-secret/jira_project)
-          jira_summary="Automated ticket created by Argo"
-          jira_description="This ticket was automatically created by the Argo pre-action workflow."
-          jira-cli --server "$jira_url" --user "$jira_user" --token "$jira_token" \
-            issue create --project "$jira_project" --summary "$jira_summary" --description "$jira_description" --type Task
-      volumeMounts:
-      - name: jira-secret
-        mountPath: /jira-secret
-        readOnly: true
-    volumes:
-    - name: jira-secret
-      secret:
-        secretName: jira-auth
-```
+          curl -X POST \
+            -H "Content-Type: application/json" \
+            -u ${JIRA_USERNAME}:${JIRA_API_TOKEN} \
+            -d "{\"fields\":{\"project\":{\"key\":\"${JIRA_PROJECT_KEY}\"},\"summary\":\"Automated ticket from Argo Workflow\",\"description\":\"This ticket was created by Argo Workflow pre-action\",\"issuetype\":{\"name\":\"Task\"}}}" \
+            ${JIRA_URL}/rest/api/2/issue
 
-```yaml
+---
 apiVersion: argoproj.io/v1alpha1
 kind: WorkflowTemplate
 metadata:
@@ -42,17 +53,18 @@ spec:
     container:
       image: curlimages/curl:7.78.0
       command: ["/bin/sh", "-c"]
+      envFrom:
+        - secretRef:
+            name: slack-webhook
+      env:
+        - name: SLACK_WEBHOOK_URL
+          valueFrom:
+            secretKeyRef:
+              name: slack-webhook
+              key: webhookUrl
       args:
         - |
-          webhook_url=$(cat /slack-secret/webhook_url)
-          payload='{"text":"This is an automated notification from the Argo post-action workflow."}'
-          curl -X POST -H 'Content-type: application/json' --data "$payload" "$webhook_url"
-      volumeMounts:
-      - name: slack-secret
-        mountPath: /slack-secret
-        readOnly: true
-    volumes:
-    - name: slack-secret
-      secret:
-        secretName: slack-webhook
-```
+          curl -X POST \
+            -H 'Content-type: application/json' \
+            --data '{"text":"Automated notification from Argo Workflow post-action"}' \
+            ${SLACK_WEBHOOK_URL}
