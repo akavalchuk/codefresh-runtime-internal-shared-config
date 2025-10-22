@@ -7,39 +7,33 @@ spec:
   templates:
   - name: create-jira-ticket
     container:
-      image: curlimages/curl:7.78.0
-      command: ["/bin/sh", "-c"]
-      envFrom:
-        - secretRef:
-            name: jira-auth
-      env:
-        - name: JIRA_URL
-          valueFrom:
-            secretKeyRef:
-              name: jira-auth
-              key: url
-        - name: JIRA_PROJECT_KEY
-          valueFrom:
-            secretKeyRef:
-              name: jira-auth
-              key: projectKey
-        - name: JIRA_USERNAME
-          valueFrom:
-            secretKeyRef:
-              name: jira-auth
-              key: username
-        - name: JIRA_API_TOKEN
-          valueFrom:
-            secretKeyRef:
-              name: jira-auth
-              key: apiToken
+      image: curlimages/curl:7.85.0
+      command: [sh, -c]
+      # Reads Jira info from /mnt/secret and creates a Jira ticket
       args:
-        - |
-          curl -X POST \
-            -H "Content-Type: application/json" \
-            -u ${JIRA_USERNAME}:${JIRA_API_TOKEN} \
-            -d "{\"fields\":{\"project\":{\"key\":\"${JIRA_PROJECT_KEY}\"},\"summary\":\"Automated ticket from Argo Workflow\",\"description\":\"This ticket was created by Argo Workflow pre-action\",\"issuetype\":{\"name\":\"Task\"}}}" \
-            ${JIRA_URL}/rest/api/2/issue
+      - |
+        JIRA_URL=$(cat /mnt/secret/jira_url)
+        JIRA_USER=$(cat /mnt/secret/jira_user)
+        JIRA_TOKEN=$(cat /mnt/secret/jira_token)
+        JIRA_PROJECT=$(cat /mnt/secret/jira_project)
+        AUTH=$(echo -n "$JIRA_USER:$JIRA_TOKEN" | base64)
+        PAYLOAD=$(jq -n \
+          --arg proj "$JIRA_PROJECT" \
+          --arg summary "Auto-created ticket" \
+          --arg description "Ticket created by Argo workflow pre-action" \
+          '{fields: {project: {key: $proj}, summary: $summary, description: $description, issuetype: {name: "Task"}}}')
+        curl -s -X POST "$JIRA_URL/rest/api/2/issue" \
+          -H "Authorization: Basic $AUTH" \
+          -H "Content-Type: application/json" \
+          -d "$PAYLOAD"
+      volumeMounts:
+      - name: jira-secret
+        mountPath: /mnt/secret
+        readOnly: true
+    volumes:
+    - name: jira-secret
+      secret:
+        secretName: jira-auth-secret
 
 ---
 apiVersion: argoproj.io/v1alpha1
@@ -51,20 +45,18 @@ spec:
   templates:
   - name: send-slack-message
     container:
-      image: curlimages/curl:7.78.0
-      command: ["/bin/sh", "-c"]
-      envFrom:
-        - secretRef:
-            name: slack-webhook
-      env:
-        - name: SLACK_WEBHOOK_URL
-          valueFrom:
-            secretKeyRef:
-              name: slack-webhook
-              key: webhookUrl
+      image: curlimages/curl:7.85.0
+      command: [sh, -c]
       args:
-        - |
-          curl -X POST \
-            -H 'Content-type: application/json' \
-            --data '{"text":"Automated notification from Argo Workflow post-action"}' \
-            ${SLACK_WEBHOOK_URL}
+      - |
+        WEBHOOK_URL=$(cat /mnt/secret/slack_webhook_url)
+        PAYLOAD='{"text": "Post-action workflow completed successfully."}'
+        curl -s -X POST "$WEBHOOK_URL" -H 'Content-Type: application/json' -d "$PAYLOAD"
+      volumeMounts:
+      - name: slack-secret
+        mountPath: /mnt/secret
+        readOnly: true
+    volumes:
+    - name: slack-secret
+      secret:
+        secretName: slack-webhook-secret
