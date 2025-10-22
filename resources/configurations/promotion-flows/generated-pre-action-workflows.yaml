@@ -13,69 +13,54 @@ spec:
       - name: REPO_URL
       - name: BRANCH
       - name: PATH
-      - name: PRODUCT_NAME
-      - name: PROMOTION_FLOW_NAME
-      - name: RELEASE_ID
   entrypoint: main-workflow
   templates:
+    # Parent template to run both tasks
     - name: main-workflow
       steps:
-        - - name: create-jira-ticket
-            template: create-jira-ticket
+        - - name: run-echo
+            template: echo
+        - - name: run-send-message
+            template: send-message
 
-    - name: create-jira-ticket
-      retryStrategy:
-        limit: "5"
-        retryPolicy: "Always"
-        backoff:
-          duration: "10s"
-      container:
-        image: curlimages/curl:7.85.0
+    # Echo template
+    - name: echo
+      script:
+        image: alpine
         command:
           - sh
-          - -c
-        args:
-          - |
-            JIRA_URL="https://your-jira-instance.atlassian.net"
-            JIRA_API="/rest/api/2/issue"
-            AUTH_HEADER="Authorization: Basic $(echo -n $(cat /secrets/jira-credentials) | base64)"
-            CONTENT_TYPE="Content-Type: application/json"
-            PAYLOAD=$(cat <<EOF
-            {
-              "fields": {
-                "project": {
-                  "key": "PROJ"
-                },
-                "summary": "Deploy {{workflow.parameters.PRODUCT_NAME}} - Promotion Flow: {{workflow.parameters.PROMOTION_FLOW_NAME}} Release: {{workflow.parameters.RELEASE_ID}}",
-                "description": "Pre-action: Creating ticket for deploying {{workflow.parameters.APP_NAME}} in namespace {{workflow.parameters.APP_NAMESPACE}} from repo {{workflow.parameters.REPO_URL}}, branch {{workflow.parameters.BRANCH}}, path {{workflow.parameters.PATH}}.",
-                "issuetype": {
-                  "name": "Task"
-                }
-              }
-            }
-            EOF
-            )
-            RESPONSE=$(curl -s -w "%{http_code}" -o /tmp/response.json -X POST -H "$AUTH_HEADER" -H "$CONTENT_TYPE" -d "$PAYLOAD" "$JIRA_URL$JIRA_API")
-            HTTP_CODE="${RESPONSE:(-3)}"
-            if [ "$HTTP_CODE" != "201" ]; then
-              echo "Failed to create Jira ticket"
-              cat /tmp/response.json
-              exit 1
-            fi
-            TICKET_KEY=$(jq -r '.key' /tmp/response.json)
-            echo "Jira ticket created: $TICKET_KEY"
-            # Save ticket key to output artifact for use in post-action
-            echo "$TICKET_KEY" > /tmp/ticket_key.txt
-        volumeMounts:
-          - name: jira-credentials
-            mountPath: /secrets
-            readOnly: true
-      outputs:
-        artifacts:
-          - name: ticket-key
-            path: /tmp/ticket_key.txt
-  volumeClaimTemplates: []
-  volumes:
-    - name: jira-credentials
-      secret:
-        secretName: jira-credentials-secret
+        source: >
+          echo "syncing
+          {{workflow.parameters.APP_NAMESPACE}}/{{workflow.parameters.APP_NAME}}
+          from {{workflow.parameters.REPO_URL}} branch
+          {{workflow.parameters.BRANCH}} path {{workflow.parameters.PATH}}"
+
+    # Send-message template
+    - name: send-message
+      retryStrategy:
+        limit: "10"
+        retryPolicy: "Always"
+        backoff:
+          duration: "5s"
+      inputs:
+        parameters:
+          - name: MODE
+            value: "simple"
+          - name: SLACK_HOOK_URL
+            value: <SLACK_HOOK_URL>
+          - name: SLACK_TEXT
+            value: Successfully promoted {{workflow.parameters.APP_NAME}}!  
+      container:
+        name: main
+        imagePullPolicy: Always
+        image: quay.io/codefreshplugins/argo-hub-slack-send-message:0.0.2-main
+        command:
+          - node
+          - /usr/src/app/index.js
+        env:
+          - name: MODE
+            value: '{{ inputs.parameters.MODE }}'
+          - name: SLACK_HOOK_URL
+            value: '{{ inputs.parameters.SLACK_HOOK_URL }}'
+          - name: SLACK_TEXT
+            value: '{{ inputs.parameters.SLACK_TEXT }}'
