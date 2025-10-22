@@ -1,0 +1,70 @@
+apiVersion: argoproj.io/v1alpha1
+kind: WorkflowTemplate
+metadata:
+  name: pre-action
+  annotations:
+    codefresh.io/workflow-origin: promotion
+    version: 0.0.1
+spec:
+  arguments:
+    parameters:
+      - name: APP_NAMESPACE
+      - name: APP_NAME
+      - name: REPO_URL
+      - name: BRANCH
+      - name: PATH
+      - name: PRODUCT_NAME
+      - name: PROMOTION_FLOW_NAME
+      - name: RELEASE_ID
+  entrypoint: main-workflow
+  templates:
+    - name: main-workflow
+      dag:
+        tasks:
+          - name: create-jira-ticket
+            template: jira-create-ticket
+
+    - name: jira-create-ticket
+      retryStrategy:
+        limit: "5"
+        retryPolicy: "Always"
+        backoff:
+          duration: "10s"
+      container:
+        image: curlimages/curl:7.85.0
+        command:
+          - sh
+          - -c
+        args:
+          - |
+            JIRA_URL="https://your-jira-instance.atlassian.net"
+            PROJECT_KEY="PROJ"
+            SUMMARY="Promotion for {{workflow.parameters.APP_NAME}} in namespace {{workflow.parameters.APP_NAMESPACE}}"
+            DESCRIPTION="Promotion Flow: {{workflow.parameters.PROMOTION_FLOW_NAME}}\nRelease ID: {{workflow.parameters.RELEASE_ID}}\nRepository: {{workflow.parameters.REPO_URL}}\nBranch: {{workflow.parameters.BRANCH}}\nPath: {{workflow.parameters.PATH}}\nProduct: {{workflow.parameters.PRODUCT_NAME}}"
+            PAYLOAD=$(jq -n \
+              --arg proj "$PROJECT_KEY" \
+              --arg summ "$SUMMARY" \
+              --arg desc "$DESCRIPTION" \
+              '{fields: {project: {key: $proj}, summary: $summ, description: $desc, issuetype: {name: "Task"}}}')
+            JIRA_USER=$(cat /mnt/secret/username)
+            JIRA_TOKEN=$(cat /mnt/secret/token)
+            RESPONSE=$(curl -s -X POST -H "Content-Type: application/json" -u $JIRA_USER:$JIRA_TOKEN -d "$PAYLOAD" $JIRA_URL/rest/api/2/issue)
+            ISSUE_KEY=$(echo $RESPONSE | jq -r '.key')
+            if [ "$ISSUE_KEY" == "null" ] || [ -z "$ISSUE_KEY" ]; then
+              echo "Failed to create Jira ticket: $RESPONSE"
+              exit 1
+            fi
+            echo "Jira ticket created: $ISSUE_KEY"
+            echo -n "$ISSUE_KEY" > /tmp/jira_issue_key.txt
+        volumeMounts:
+          - name: jira-credentials
+            mountPath: /mnt/secret
+            readOnly: true
+        outputs:
+          artifacts:
+            - name: jira-issue-key
+              path: /tmp/jira_issue_key.txt
+      volumes:
+        - name: jira-credentials
+          secret:
+            secretName: jira-credentials

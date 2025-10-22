@@ -1,0 +1,76 @@
+apiVersion: argoproj.io/v1alpha1
+kind: WorkflowTemplate
+metadata:
+  name: post-action
+  annotations:
+    codefresh.io/workflow-origin: promotion
+    version: 0.0.1
+spec:
+  arguments:
+    parameters:
+      - name: APP_NAMESPACE
+      - name: APP_NAME
+      - name: REPO_URL
+      - name: BRANCH
+      - name: PATH
+      - name: COMMIT_SHA
+        value: ''
+      - name: COMMIT_MESSAGE
+        value: ''
+      - name: COMMIT_AUTHOR
+        value: ''
+      - name: COMMIT_DATE
+        value: ''
+      - name: PRODUCT_NAME
+      - name: APP_VERSION
+      - name: PROMOTION_FLOW_NAME
+      - name: RELEASE_ID
+  entrypoint: main-workflow
+  templates:
+    - name: main-workflow
+      dag:
+        tasks:
+          - name: close-jira-ticket
+            template: jira-close-ticket
+
+    - name: jira-close-ticket
+      retryStrategy:
+        limit: "5"
+        retryPolicy: "Always"
+        backoff:
+          duration: "10s"
+      inputs:
+        artifacts:
+          - name: jira-issue-key
+            path: /tmp/jira_issue_key.txt
+      container:
+        image: curlimages/curl:7.85.0
+        command:
+          - sh
+          - -c
+        args:
+          - |
+            JIRA_URL="https://your-jira-instance.atlassian.net"
+            ISSUE_KEY=$(cat /tmp/jira_issue_key.txt)
+            if [ -z "$ISSUE_KEY" ]; then
+              echo "Jira issue key not provided, cannot close ticket."
+              exit 1
+            fi
+            JIRA_USER=$(cat /mnt/secret/username)
+            JIRA_TOKEN=$(cat /mnt/secret/token)
+            TRANSITION_PAYLOAD='{"transition": {"id": "31"}}'
+            # Transition ID 31 typically corresponds to "Done" - please verify your Jira workflow transition ID.
+            RESPONSE=$(curl -s -X POST -H "Content-Type: application/json" -u $JIRA_USER:$JIRA_TOKEN -d "$TRANSITION_PAYLOAD" $JIRA_URL/rest/api/2/issue/$ISSUE_KEY/transitions)
+            if [ $? -ne 0 ]; then
+              echo "Failed to close Jira ticket $ISSUE_KEY"
+              exit 1
+            fi
+            echo "Jira ticket $ISSUE_KEY closed with status Done."
+        volumeMounts:
+          - name: jira-credentials
+            mountPath: /mnt/secret
+            readOnly: true
+      volumes:
+        - name: jira-credentials
+          secret:
+            secretName: jira-credentials
