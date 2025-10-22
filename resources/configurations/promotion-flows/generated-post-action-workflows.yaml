@@ -1,0 +1,80 @@
+apiVersion: argoproj.io/v1alpha1
+kind: WorkflowTemplate
+metadata:
+  name: post-action
+  annotations:
+    codefresh.io/workflow-origin: promotion
+    version: 0.0.1
+spec:
+  arguments:
+    parameters:
+      - name: APP_NAMESPACE
+      - name: APP_NAME
+      - name: REPO_URL
+      - name: BRANCH
+      - name: PATH
+      - name: COMMIT_SHA
+        value: ''
+      - name: COMMIT_MESSAGE
+        value: ''
+      - name: COMMIT_AUTHOR
+        value: ''
+      - name: COMMIT_DATE
+        value: ''
+      - name: PRODUCT_NAME
+      - name: APP_VERSION
+      - name: PROMOTION_FLOW_NAME
+      - name: RELEASE_ID
+  entrypoint: main-workflow
+  templates:
+    - name: main-workflow
+      dag:
+        tasks:
+          - name: close-jira-ticket
+            template: close-jira-ticket
+
+    - name: close-jira-ticket
+      inputs:
+        parameters:
+          - name: APP_NAMESPACE
+          - name: APP_NAME
+          - name: PRODUCT_NAME
+          - name: PROMOTION_FLOW_NAME
+          - name: RELEASE_ID
+      container:
+        image: curlimages/curl:7.85.0
+        command:
+          - sh
+          - -c
+        args:
+          - |
+            JIRA_DOMAIN="your-domain.atlassian.net"
+            AUTH_HEADER="Authorization: Basic $(cat /secrets/jira-auth | base64 -w0)"
+            # Read the issue key from a location or passed parameter; here assuming from a file mounted or passed artifact. For demonstration, expecting env var or file.
+            if [ ! -f /tmp/issue_key ]; then
+              echo "Issue key file not found, cannot close Jira ticket." >&2
+              exit 1
+            fi
+            ISSUE_KEY=$(cat /tmp/issue_key)
+            TRANSITION_API="/rest/api/2/issue/${ISSUE_KEY}/transitions"
+            TRANSITION_PAYLOAD='{
+              "transition": {
+                "id": "31"
+              }
+            }'
+            # Transition id "31" should be replaced with correct transition to 'Done' in your Jira workflow.
+            RESPONSE=$(curl -s -X POST -H "Content-Type: application/json" -H "$AUTH_HEADER" --data "$TRANSITION_PAYLOAD" "https://${JIRA_DOMAIN}${TRANSITION_API}")
+            if [ $? -eq 0 ]; then
+              echo "Jira ticket $ISSUE_KEY closed with transition to Done."
+            else
+              echo "Failed to close Jira ticket $ISSUE_KEY." >&2
+              exit 1
+            fi
+        volumeMounts:
+          - name: jira-secret
+            mountPath: /secrets
+            readOnly: true
+      volumes:
+        - name: jira-secret
+          secret:
+            secretName: jira-credentials
