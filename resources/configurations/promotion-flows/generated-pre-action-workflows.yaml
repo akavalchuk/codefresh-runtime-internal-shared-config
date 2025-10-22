@@ -1,0 +1,92 @@
+apiVersion: argoproj.io/v1alpha1
+kind: WorkflowTemplate
+metadata:
+  name: pre-action
+  annotations:
+    codefresh.io/workflow-origin: promotion
+    version: 0.0.1
+spec:
+  arguments:
+    parameters:
+      - name: APP_NAMESPACE
+      - name: APP_NAME
+      - name: REPO_URL
+      - name: BRANCH
+      - name: PATH
+      - name: PRODUCT_NAME
+      - name: PROMOTION_FLOW_NAME
+      - name: RELEASE_ID
+  entrypoint: main-workflow
+  templates:
+    - name: main-workflow
+      steps:
+        - - name: create-jira-ticket
+            template: create-jira-ticket
+
+    - name: create-jira-ticket
+      retryStrategy:
+        limit: "5"
+        retryPolicy: "Always"
+        backoff:
+          duration: "10s"
+      inputs:
+        parameters:
+          - name: APP_NAMESPACE
+          - name: APP_NAME
+          - name: PRODUCT_NAME
+          - name: PROMOTION_FLOW_NAME
+          - name: RELEASE_ID
+      container:
+        image: curlimages/curl:7.85.0
+        command:
+          - sh
+          - -c
+        args:
+          - |
+            echo "Creating Jira ticket for app {{inputs.parameters.APP_NAME}} in namespace {{inputs.parameters.APP_NAMESPACE}}"
+            JIRA_BASE_URL="https://your-jira-instance.atlassian.net"
+            JIRA_PROJECT_KEY="PROJ"
+            JIRA_ISSUE_SUMMARY="Release {{inputs.parameters.RELEASE_ID}} promotion for {{inputs.parameters.APP_NAME}}"
+            JIRA_ISSUE_DESCRIPTION="Promotion Flow: {{inputs.parameters.PROMOTION_FLOW_NAME}}\nProduct: {{inputs.parameters.PRODUCT_NAME}}\nApp Namespace: {{inputs.parameters.APP_NAMESPACE}}\nApp Name: {{inputs.parameters.APP_NAME}}"
+
+            # Extract credentials from the Kubernetes secret mounted as environment variables
+            JIRA_USER=$(cat /secrets/jira-username)
+            JIRA_API_TOKEN=$(cat /secrets/jira-api-token)
+
+            PAYLOAD=$(cat <<EOF
+{
+  "fields": {
+    "project": {
+      "key": "$JIRA_PROJECT_KEY"
+    },
+    "summary": "$JIRA_ISSUE_SUMMARY",
+    "description": "$JIRA_ISSUE_DESCRIPTION",
+    "issuetype": {
+      "name": "Task"
+    }
+  }
+}
+EOF
+)
+            RESPONSE=$(curl -s -u "$JIRA_USER:$JIRA_API_TOKEN" -X POST --data "$PAYLOAD" -H "Content-Type: application/json" $JIRA_BASE_URL/rest/api/2/issue)
+            ISSUE_KEY=$(echo "$RESPONSE" | jq -r '.key')
+            if [ "$ISSUE_KEY" = "null" ] || [ -z "$ISSUE_KEY" ]; then
+              echo "Failed to create Jira issue: $RESPONSE"
+              exit 1
+            fi
+            echo "Created Jira issue $ISSUE_KEY"
+            # Save the issue key to a file for later stages (using workflow outputs)
+            echo "{\"jira_issue_key\":\"$ISSUE_KEY\"}" > /tmp/output.json
+      volumeMounts:
+        - name: jira-credentials
+          mountPath: /secrets
+          readOnly: true
+      outputs:
+        parameters:
+          - name: jira-issue-key
+            valueFrom:
+              path: /tmp/output.json
+  volumes:
+    - name: jira-credentials
+      secret:
+        secretName: jira-credentials
