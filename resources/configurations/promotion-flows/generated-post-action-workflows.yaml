@@ -1,0 +1,84 @@
+apiVersion: argoproj.io/v1alpha1
+kind: WorkflowTemplate
+metadata:
+  name: post-action
+  annotations:
+    codefresh.io/workflow-origin: promotion
+    version: 0.0.1
+spec:
+  arguments:
+    parameters:
+      - name: APP_NAMESPACE
+      - name: APP_NAME
+      - name: REPO_URL
+      - name: BRANCH
+      - name: PATH
+      - name: COMMIT_SHA
+        value: ''
+      - name: COMMIT_MESSAGE
+        value: ''
+      - name: COMMIT_AUTHOR
+        value: ''
+      - name: COMMIT_DATE
+        value: ''
+      - name: PRODUCT_NAME
+      - name: APP_VERSION
+      - name: PROMOTION_FLOW_NAME
+      - name: RELEASE_ID
+  entrypoint: main-workflow
+  templates:
+    - name: main-workflow
+      steps:
+        - - name: close-jira-ticket
+            template: close-jira-ticket
+
+    - name: close-jira-ticket
+      inputs:
+        parameters:
+          - name: ticket-key
+      retryStrategy:
+        limit: "5"
+        retryPolicy: "Always"
+        backoff:
+          duration: "10s"
+      container:
+        image: curlimages/curl:7.85.0
+        command:
+          - sh
+          - -c
+        args:
+          - |
+            JIRA_URL="https://your-jira-instance.atlassian.net"
+            TICKET_KEY="{{inputs.parameters.ticket-key}}"
+            JIRA_API="/rest/api/2/issue/$TICKET_KEY/transitions"
+            AUTH_HEADER="Authorization: Basic $(echo -n $(cat /secrets/jira-credentials) | base64)"
+            CONTENT_TYPE="Content-Type: application/json"
+            PAYLOAD=$(cat <<EOF
+            {
+              "transition": {
+                "id": "31"
+              },
+              "fields": {
+                "resolution": {
+                  "name": "Done"
+                }
+              }
+            }
+            EOF
+            )
+            RESPONSE=$(curl -s -w "%{http_code}" -o /tmp/response.json -X POST -H "$AUTH_HEADER" -H "$CONTENT_TYPE" -d "$PAYLOAD" "$JIRA_URL$JIRA_API")
+            HTTP_CODE="${RESPONSE:(-3)}"
+            if [ "$HTTP_CODE" != "204" ] && [ "$HTTP_CODE" != "200" ]; then
+              echo "Failed to close Jira ticket $TICKET_KEY"
+              cat /tmp/response.json
+              exit 1
+            fi
+            echo "Jira ticket $TICKET_KEY marked as Done"
+        volumeMounts:
+          - name: jira-credentials
+            mountPath: /secrets
+            readOnly: true
+  volumes:
+    - name: jira-credentials
+      secret:
+        secretName: jira-credentials-secret
