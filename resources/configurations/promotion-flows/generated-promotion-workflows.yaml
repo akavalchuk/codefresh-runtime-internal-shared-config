@@ -2,6 +2,8 @@ apiVersion: argoproj.io/v1alpha1
 kind: WorkflowTemplate
 metadata:
   name: pre-action
+  annotations:
+    codefresh.io/workflow-origin: promotion
 spec:
   entrypoint: create-jira-ticket
   templates:
@@ -9,54 +11,46 @@ spec:
     container:
       image: curlimages/curl:7.85.0
       command: [sh, -c]
-      # Reads Jira info from /mnt/secret and creates a Jira ticket
       args:
       - |
-        JIRA_URL=$(cat /mnt/secret/jira_url)
-        JIRA_USER=$(cat /mnt/secret/jira_user)
-        JIRA_TOKEN=$(cat /mnt/secret/jira_token)
-        JIRA_PROJECT=$(cat /mnt/secret/jira_project)
-        AUTH=$(echo -n "$JIRA_USER:$JIRA_TOKEN" | base64)
+        JIRA_USER=$(kubectl get secret jira-credentials -n ${APP_NAMESPACE} -o jsonpath='{.data.username}' | base64 --decode)
+        JIRA_TOKEN=$(kubectl get secret jira-credentials -n ${APP_NAMESPACE} -o jsonpath='{.data.token}' | base64 --decode)
+        JIRA_URL="https://your-jira-instance.atlassian.net/rest/api/2/issue"
         PAYLOAD=$(jq -n \
-          --arg proj "$JIRA_PROJECT" \
-          --arg summary "Auto-created ticket" \
-          --arg description "Ticket created by Argo workflow pre-action" \
-          '{fields: {project: {key: $proj}, summary: $summary, description: $description, issuetype: {name: "Task"}}}')
-        curl -s -X POST "$JIRA_URL/rest/api/2/issue" \
-          -H "Authorization: Basic $AUTH" \
-          -H "Content-Type: application/json" \
-          -d "$PAYLOAD"
-      volumeMounts:
-      - name: jira-secret
-        mountPath: /mnt/secret
-        readOnly: true
-    volumes:
-    - name: jira-secret
-      secret:
-        secretName: jira-auth-secret
-
+          --arg project "PROJ" \
+          --arg summary "Release ${RELEASE_ID} for ${APP_NAME}" \
+          --arg description "Promotion flow: ${PROMOTION_FLOW_NAME}\nApp: ${APP_NAME}\nNamespace: ${APP_NAMESPACE}\nRepo: ${REPO_URL}\nBranch: ${BRANCH}\nPath: ${PATH}\nProduct: ${PRODUCT_NAME}" \
+          --arg issuetype "Task" \
+          '{fields: {project: {key: $project}, summary: $summary, description: $description, issuetype: {name: $issuetype}}}')
+        ISSUE_KEY=$(curl -s -X POST -u $JIRA_USER:$JIRA_TOKEN -H "Content-Type: application/json" --data "$PAYLOAD" $JIRA_URL | jq -r .key)
+        echo $ISSUE_KEY > /tmp/issue_key.txt
+    outputs:
+      parameters:
+      - name: issue-key
+        valueFrom:
+          path: /tmp/issue_key.txt
 ---
 apiVersion: argoproj.io/v1alpha1
 kind: WorkflowTemplate
 metadata:
   name: post-action
+  annotations:
+    codefresh.io/workflow-origin: promotion
 spec:
-  entrypoint: send-slack-message
+  entrypoint: close-jira-ticket
   templates:
-  - name: send-slack-message
+  - name: close-jira-ticket
+    inputs:
+      parameters:
+      - name: issue-key
     container:
       image: curlimages/curl:7.85.0
       command: [sh, -c]
       args:
       - |
-        WEBHOOK_URL=$(cat /mnt/secret/slack_webhook_url)
-        PAYLOAD='{"text": "Post-action workflow completed successfully."}'
-        curl -s -X POST "$WEBHOOK_URL" -H 'Content-Type: application/json' -d "$PAYLOAD"
-      volumeMounts:
-      - name: slack-secret
-        mountPath: /mnt/secret
-        readOnly: true
-    volumes:
-    - name: slack-secret
-      secret:
-        secretName: slack-webhook-secret
+        JIRA_USER=$(kubectl get secret jira-credentials -n ${APP_NAMESPACE} -o jsonpath='{.data.username}' | base64 --decode)
+        JIRA_TOKEN=$(kubectl get secret jira-credentials -n ${APP_NAMESPACE} -o jsonpath='{.data.token}' | base64 --decode)
+        TRANSITION_URL="https://your-jira-instance.atlassian.net/rest/api/2/issue/{{inputs.parameters.issue-key}}/transitions"
+        TRANSITION_PAYLOAD='{"transition": {"id": "31"}}'
+        # transition id 31 assumed to be "Done", adjust according to your Jira config
+        curl -s -X POST -u $JIRA_USER:$JIRA_TOKEN -H "Content-Type: application/json" -d "$TRANSITION_PAYLOAD" "$TRANSITION_URL"
