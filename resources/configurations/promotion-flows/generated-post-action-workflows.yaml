@@ -21,64 +21,70 @@ spec:
         value: ''
       - name: COMMIT_DATE
         value: ''
-      - name: PRODUCT_NAME
-      - name: APP_VERSION
-      - name: PROMOTION_FLOW_NAME
-      - name: RELEASE_ID
   entrypoint: main-workflow
   templates:
+    # Parent template to run both tasks
     - name: main-workflow
       steps:
-        - - name: close-jira-ticket
-            template: close-jira-ticket
+        - - name: run-echo
+            template: echo
+        - - name: run-send-message
+            template: send-message
 
-    - name: close-jira-ticket
-      inputs:
-        parameters:
-          - name: ticket-key
-      retryStrategy:
-        limit: "5"
-        retryPolicy: "Always"
-        backoff:
-          duration: "10s"
-      container:
-        image: curlimages/curl:7.85.0
+    # Echo template
+    - name: echo
+      script:
+        image: alpine
         command:
           - sh
-          - -c
-        args:
-          - |
-            JIRA_URL="https://your-jira-instance.atlassian.net"
-            TICKET_KEY="{{inputs.parameters.ticket-key}}"
-            JIRA_API="/rest/api/2/issue/$TICKET_KEY/transitions"
-            AUTH_HEADER="Authorization: Basic $(echo -n $(cat /secrets/jira-credentials) | base64)"
-            CONTENT_TYPE="Content-Type: application/json"
-            PAYLOAD=$(cat <<EOF
-            {
-              "transition": {
-                "id": "31"
-              },
-              "fields": {
-                "resolution": {
-                  "name": "Done"
-                }
-              }
-            }
-            EOF
-            )
-            RESPONSE=$(curl -s -w "%{http_code}" -o /tmp/response.json -X POST -H "$AUTH_HEADER" -H "$CONTENT_TYPE" -d "$PAYLOAD" "$JIRA_URL$JIRA_API")
-            HTTP_CODE="${RESPONSE:(-3)}"
-            if [ "$HTTP_CODE" != "204" ] && [ "$HTTP_CODE" != "200" ]; then
-              echo "Failed to close Jira ticket $TICKET_KEY"
-              cat /tmp/response.json
-              exit 1
-            fi
-            echo "Jira ticket $TICKET_KEY marked as Done"
-        volumeMounts:
-          - name: jira-credentials
-            mountPath: /secrets
-            readOnly: true
-  volumes:
-    - name: jira-credentials
-      secret:
-        secretName: jira-credentials-secret
+        source: >
+          echo "syncing
+          {{workflow.parameters.APP_NAMESPACE}}/{{workflow.parameters.APP_NAME}}
+          from {{workflow.parameters.REPO_URL}} branch
+          {{workflow.parameters.BRANCH}} path {{workflow.parameters.PATH}}"
+
+          if [[ -n "{{workflow.parameters.COMMIT_SHA}}" ]]; then
+            echo "commit SHA: {{workflow.parameters.COMMIT_SHA}}"
+          fi
+
+          if [[ -n "{{workflow.parameters.COMMIT_AUTHOR}}" ]]; then
+            echo "commit author: {{workflow.parameters.COMMIT_AUTHOR}}"
+          fi
+
+          if [[ -n "{{workflow.parameters.COMMIT_MESSAGE}}" ]]; then
+            echo "commit message: {{workflow.parameters.COMMIT_MESSAGE}}"
+          fi
+
+          if [[ -n "{{workflow.parameters.COMMIT_DATE}}" ]]; then
+            echo "commit date: {{workflow.parameters.COMMIT_DATE}}"
+          fi
+
+    # Send-message template
+    - name: send-message
+      retryStrategy:
+        limit: "10"
+        retryPolicy: "Always"
+        backoff:
+          duration: "5s"
+      inputs:
+        parameters:
+          - name: MODE
+            value: "simple"
+          - name: SLACK_HOOK_URL
+            value: <SLACK_HOOK_URL>
+          - name: SLACK_TEXT
+            value: Successfully promoted {{workflow.parameters.APP_NAME}}!  
+      container:
+        name: main
+        imagePullPolicy: Always
+        image: quay.io/codefreshplugins/argo-hub-slack-send-message:0.0.2-main
+        command:
+          - node
+          - /usr/src/app/index.js
+        env:
+          - name: MODE
+            value: '{{ inputs.parameters.MODE }}'
+          - name: SLACK_HOOK_URL
+            value: '{{ inputs.parameters.SLACK_HOOK_URL }}'
+          - name: SLACK_TEXT
+            value: '{{ inputs.parameters.SLACK_TEXT }}'
