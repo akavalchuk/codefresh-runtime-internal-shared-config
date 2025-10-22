@@ -15,7 +15,7 @@ spec:
   source:
     directory:
       include: >-
-        {akav-kind-runtime-2/akav-kind-runtime-2.yaml,akav-kind-runtime-2/default-git-source.yaml,akav-kind-runtime-2/local-gs-helm.yaml,all-runtimes-all-clusters/**/*.yaml,all-runtimes-all-clusters/*.yaml,configurations/**/*.yaml,control-planes/**/*.yaml,control-planes/*.yaml,runtimes/akav-kind-runtime-2/**/*.yaml,runtimes/akav-kind-runtime-2/*.yaml}
+        {akav-kind-runtime-2/akav-kind-runtime-2.yaml,akav-kind-runtime-2/default-git-source.yaml,akav-kind-runtime-2/gdlc.yaml,akav-kind-runtime-2/local-gs-helm.yaml,all-runtimes-all-clusters/**/*.yaml,all-runtimes-all-clusters/*.yaml,configurations/**/*.yaml,control-planes/**/*.yaml,control-planes/*.yaml,runtimes/akav-kind-runtime-2/**/*.yaml,runtimes/akav-kind-runtime-2/*.yaml}
       recurse: true
     path: resources
     repoURL: https://github.com/akavalchuk/codefresh-runtime-internal-shared-config.git
