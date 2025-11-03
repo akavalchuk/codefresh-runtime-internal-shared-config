@@ -2,8 +2,8 @@ apiVersion: v2
 appVersion: 1.0.0
 description: Codefresh gitops runtime umbrella chart
 name: codefresh-gitops-runtime
-version: 0.0.0-feat-add-revision-to-app-status-4e0ab00
+version: 0.0.0-eti-codefresh-patch-1-e6506f2
 dependencies:
   - name: gitops-runtime
     repository: oci://quay.io/codefresh/dev
-    version: 0.0.0-feat-add-revision-to-app-status-4e0ab00
+    version: 0.0.0-eti-codefresh-patch-1-e6506f2
