@@ -3,6 +3,13 @@ kind: Product
 metadata:
   name: my-product
 spec:
+  promotionFlows:
+    - name: stg-prod
+      gitTriggerSelectors:
+        - key: commitMessage
+          operator: In
+          values:
+            - test*
   promotionTemplate:
     versionSource:
       file: guestbook-ui-deployment.yaml
