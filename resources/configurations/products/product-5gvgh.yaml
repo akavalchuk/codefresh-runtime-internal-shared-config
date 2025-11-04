@@ -1,0 +1,13 @@
+apiVersion: codefresh.io/v1beta2
+kind: Product
+metadata:
+  name: product-5gvgh
+spec:
+  promotionFlows:
+    - name: stg-prod
+      gitTriggerSelectors:
+        - key: commitMessage
+          operator: In
+          values:
+            - hehe
+  concurrency: queue
