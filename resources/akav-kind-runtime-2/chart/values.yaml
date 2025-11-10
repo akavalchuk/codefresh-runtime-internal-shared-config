@@ -1,6 +1,6 @@
 gitops-runtime:
-  # gitops-operator:
-    # enabled: false
+  gitops-operator:
+    enabled: false
   app-proxy:
     config:
       cors: http://local.codefresh.io,https://akavalchuk-platform.ngrok.io
