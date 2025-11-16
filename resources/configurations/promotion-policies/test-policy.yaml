@@ -8,10 +8,11 @@ spec:
     product:
       names:
         - simple-product
+        - my-product
     targetEnvironment:
       names:
         - production
   policy:
     action: commit
-    preAction: test7
-    postAction: test7
+    preAction: simple-success-1
+    postAction: simple-success-1
