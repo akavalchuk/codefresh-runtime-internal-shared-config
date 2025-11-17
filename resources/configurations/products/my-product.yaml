@@ -14,5 +14,5 @@ spec:
     promotion:
       guestbook-ui-deployment.yaml:
         jsonPaths:
-          - ""
+          - $.*.*.*.*.*.image
   concurrency: queue
