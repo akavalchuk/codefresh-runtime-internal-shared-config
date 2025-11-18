@@ -11,6 +11,9 @@ spec:
           values:
             - test*
   promotionTemplate:
+    versionSource:
+      file: guestbook-ui-deployment.yaml
+      jsonPath: $.*.*.version
     promotion:
       guestbook-ui-deployment.yaml:
         jsonPaths:
